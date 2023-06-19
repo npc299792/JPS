@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>JPS Sample 1</title>
+		<style>
+			body { 
+				background-color: rgba(50, 50, 50, 1); 
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 1);
+				border: 2px ;
+			}
+			html, body {
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<canvas id="game-view" width="1000" height="1000">#CANVAS_ERROR</canvas>
+		
+		<script src="JPS.js"></script>
+		<script src="JPS_LIB.js"></script>
+
+		<script>
+			window.onload = function() {
+				can = document.getElementById('game-view')
+				ctx = can.getContext('2d', { alpha: false })
+	
+				can.width = window.innerWidth
+				can.height = window.innerHeight
+
+				// #########################################
+
+				system = new JPS.SYSTEM(
+					new JPS.LIB.WALL({x:200, y:400, w:200, h:100, color:'yellow'}),
+					new JPS.LIB.WALL({x:600, y:700, w:200, h:-100, color:'green'}),
+					new JPS.LIB.WALL({x:200, y:800, w:600, h:0, color:'blue'}),
+
+					new JPS.LIB.EMITTER({x:500, y:100, w:5, h:5, rate:10, life:10000}),
+					new JPS.LIB.ANIMATE({x:[0,200], y:[0,200], vy:500}),
+					new JPS.LIB.CIRCLE({s:[1,1]})
+				)
+
+				render()
+			}
+
+			function render(time) {
+				ctx.clearRect(0, 0, can.width, can.height)
+				system.render(ctx)
+				requestAnimationFrame(render)
+			}
+		</script>
+	</body>
+</html>

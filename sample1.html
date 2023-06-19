@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<title>JPS Sample 2</title>
+		<style>
+			body { 
+				background-color: rgba(50, 50, 50, 1); 
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 1);
+				border: 2px ;
+			}
+			html, body {
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<canvas id="game-view" width="1000" height="1000">#CANVAS_ERROR</canvas>
+		
+		<script src="JPS.js"></script>
+		<script src="JPS_LIB.js"></script>
+
+		<script>
+			window.onload = function() {
+				can = document.getElementById('game-view')
+				ctx = can.getContext('2d', { alpha: false })
+	
+				can.width = window.innerWidth
+				can.height = window.innerHeight
+
+				// #########################################
+
+				system = new JPS.SYSTEM(
+					new JPS.LIB.EMITTER({x:0, y:0, z:1000, w:500, h:500, d:500, spawn:50, rate:50}),
+					new JPS.LIB.ANIMATE({z:[-150,80]}),
+					new JPS.LIB.CAMERA({mode:1}),
+					new JPS.LIB.SPHERE({radius:[2,1.5]}),
+					new JPS.LIB.INFO()
+				)
+
+				render()
+			}
+
+			function render(time) {
+				ctx.clearRect(0, 0, can.width, can.height)
+				system.render(ctx)
+				requestAnimationFrame(render)
+			}
+		</script>
+	</body>
+</html>
