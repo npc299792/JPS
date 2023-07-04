@@ -1,4 +1,5 @@
-﻿
+﻿// JPS - Javascript Particle System  |  v0.9  |  npc299792  |  MIT Licence
+
 const JPS = { TYPES: {
 	PARTICLE: {x:0, y:0, z:0, s:1, r:0, sx:1, sy:1, rx:0, ry:0, age:0}
 }}
@@ -44,7 +45,7 @@ JPS.SYSTEM = class {
 		this.modifiers.exit.forEach(m => m.type == p.type && m.exit(p,ctx,this))
 	}
 	
-	clear(p, m = 0) {
+	clear(p, m) {
 		if (p) this.particles = []
 		if (m) this.modifiers = {prev:[], init:[], render:[], exit:[], post:[]}
 	}
@@ -73,10 +74,11 @@ JPS.SYSTEM = class {
 	// #############################################################################################################################
 	
 	render(ctx, time = 16.66) {
-		this.time += time; this.delta = time; this.skip = 0
 		var stime = this.speed*time/1000
-		
+		this.time += stime*1000; this.delta = time; this.skip = 0
+
 		this.modifiers.prev.forEach(m => m.prev(ctx,stime,this))
+		this.rendertime = performance.now()
 		ctx?.save()
 
 		for (var i = 0; i < this.particles.length; i++) {
@@ -99,6 +101,7 @@ JPS.SYSTEM = class {
 		}
 
 		ctx?.restore()
+		this.rendertime = performance.now() - this.rendertime
 		this.modifiers.post.forEach(m => m.post(ctx,stime,this))
 	}
 }

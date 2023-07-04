@@ -1,4 +1,5 @@
-﻿
+﻿// JPS - Javascript Particle System  |  v0.9  |  npc299792  |  MIT Licence
+
 JPS.LIB ??= {}
 
 // #################################################################################################################################
@@ -8,19 +9,15 @@ JPS.TYPES.COLOR		= {r:[128,64], g:[128,64], b:[128,64], a:[0.6,0.4]}
 JPS.TYPES.GRADIENT	= [{i:0.3, r:[200,50], g:[200,50], b:[200,50], a:1}, {i:1, r:0, g:0, b:0, a:0}]
 
 JPS.TYPES.RECT		= {w:[10,10], h:[10,10], color:JPS.TYPES.COLOR, method:'fillRect'}
-JPS.TYPES.CIRCLE	= {radius:[10,10], color:JPS.TYPES.COLOR}
+JPS.TYPES.CIRCLE	= {radius:[10,10], color:JPS.TYPES.COLOR, method:'fill'}
 JPS.TYPES.SPHERE	= {radius:[10,10], gradient:JPS.TYPES.GRADIENT}
 JPS.TYPES.TEXT		= {size:[20,10], color:JPS.TYPES.COLOR, font:'Arial', method:'fillText', text:['A','B','C']}
-JPS.TYPES.IMAGE		= {x:0, y:0, s:[1,1]}
 
-JPS.TYPES.EMITTER	= {x:0, y:0, z:0, w:100, h:100, d:0, spawn:0, rate:0}
+JPS.TYPES.EMITTER	= {x:0, y:0, z:0, w:100, h:100, d:0, spawn:0, rate:1}
 JPS.TYPES.ANIMATE	= {id:'v', data:{x:[0,100], y:[0,100]}}
 JPS.TYPES.WALL		= {id:'v', x:0, y:0, w:100, h:100, size:1, bounce:0.6}
-JPS.TYPES.INFO		= {x:5, y:20, size:15, color:'grey', font:'Arial', method:'fillText', text1:'fps: %%fps  /  particles: %%p'}
+JPS.TYPES.INFO		= {x:20, y:20, size:15, color:'grey', font:'Arial', method:'fillText', text1:'fps: %%fps  /  particles: %%p  /  rendertime: %%rt'}
 JPS.TYPES.CAMERA	= {x:0, y:0, z:-1000, depth:2000, fov:Math.PI/2, center:{x:window.innerWidth/2,y:window.innerHeight/2}, mode:2}
-
-JPS.TYPES.NEWTON	= {id:'v', mass:1, const:1.1}
-JPS.TYPES.BOX		= {id:'v', x:0, y:0, w:500, h:500}
 
 // #################################################################################################################################
 
@@ -34,11 +31,11 @@ JPS.TOOLS.RNDBASE = function(a, b) {
 }
 
 JPS.TOOLS.PRINT = function(ctx, t, h=20, x=0, y=0, f, c, a, b, m='fillText') {
-	if (f) ctx.font = h + 'px ' + f
-	if (c) ctx.fillStyle = c
-	if (a) ctx.textAlign = a
-	if (b) ctx.textBaseline = b
-	if (t) ctx[m](t, x, y)
+	f && (ctx.font = h + 'px ' + f)
+	c && (ctx.fillStyle = c)
+	a && (ctx.textAlign = a)
+	b && (ctx.textBaseline = b)
+	t && ctx[m](t,x,y)
 }
 
 JPS.TOOLS.INRECT = (x,y,a,b,c,d) => x > a && x < c && y > b && y < d
@@ -79,7 +76,7 @@ JPS.LIB.CIRCLE = class {
 	render(p, ctx) {
 		if (!ctx) return
 		ctx.fillStyle = p.color
-		ctx.beginPath(); ctx.arc(0, 0, p.radius, 0, 360); ctx.fill()
+		ctx.beginPath(); ctx.arc(0, 0, p.radius, 0, 360); ctx[this.method]()
 	}
 }
 
@@ -104,12 +101,9 @@ JPS.LIB.SPHERE = class {
 
 JPS.LIB.IMAGE = class {
 	constructor(data) {
-		Object.assign(this, JPS.TYPES.IMAGE, data)
+		Object.assign(this, data)
 		this.image = new Image()
 		this.image.src = data.src
-	}
-	init(p) {
-		JPS.TOOLS.RNDBASE(p, this)
 	}
 	render(p, ctx) {
 		ctx?.drawImage(this.image, -this.image.width/2, -this.image.height/2)
@@ -144,7 +138,7 @@ JPS.LIB.EMITTER = class {
 		while (this.spawn >= 1) {
 			var p = sys.spawn(1, ctx)
 			JPS.TOOLS.RNDBASE(p, this)
-			if (Array.isArray(p.type)) p.type = p.type[~~(Math.random()*p.type.length)]
+			if (Array.isArray(this.type)) p.type = this.type[~~(Math.random()*this.type.length)]
 			p.x = JPS.TOOLS.RND(this.x, this.w/2)
 			p.y = JPS.TOOLS.RND(this.y, this.h/2)
 			p.z = JPS.TOOLS.RND(this.z, this.d/2)
@@ -162,7 +156,7 @@ JPS.LIB.ANIMATE = class {
 	init(p) {
 		for (var e in this.data) p[this.id+e] = JPS.TOOLS.RND(this.data[e])
 	}
-	render(p, ctx, time, sys) {
+	render(p, ctx, time) {
 		for (var e in this.data) p[e] += p[this.id+e] * time
 	}
 }
@@ -193,13 +187,13 @@ JPS.LIB.WALL = class {
 	constructor(data) {
 		Object.assign(this, JPS.TYPES.WALL, data)
 		this.post = this.color && function(ctx) { if (ctx) {
-			ctx.strokeStyle = this.color; ctx.lineWidth = this.size
+			ctx.strokeStyle = this.color || 'red'; ctx.lineWidth = this.size
 			ctx.beginPath(); ctx.moveTo(this.x,this.y); ctx.lineTo(this.x+this.w,this.y+this.h); ctx.stroke()
 		}}
 	}
 	render(p, ctx, time, sys) {
 		var vx = p[this.id+'x'], vy = p[this.id+'y'], len = Math.sqrt(vx**2 + vy**2)
-		var ab = p.s * (p.radius || p.h || p.w || 10) + time*len + this.size
+		var ab = p.s * (p.radius || p.h || p.w || 10) + time * len + this.size
 
 		if (JPS.TOOLS.INTERSECT(this.x,this.y, this.w,this.h, p.x,p.y, p.sx*ab*(vx/len), p.sy*ab*(vy/len))) {
 			ab = Math.atan2(this.w,this.h)*2 + Math.PI/2 + Math.atan2(vy,vx)
@@ -215,18 +209,14 @@ JPS.LIB.WALL = class {
 JPS.LIB.INFO = class {
 	constructor(data) {
 		Object.assign(this, JPS.TYPES.INFO, data)
-		this.render = this.text2 && function(ctx) { if (ctx) {
-			var txt = this.text2
-			for (i in p) txt = txt.replace('%%'+i, p[i])
-			JPS.TOOLS.PRINT(
-				ctx, txt, this.size, this.offset?.x || 0, this.offset?.y || 0, 
-				this.font, this.color, this.align, this.base, this.method
-			)
+		this.render = this.text2 && function(p,ctx) { if (ctx) {
+			for (var i in p) var txt = this.text2.replace('%%'+i, typeof p[i] == Number && p[i].tofixed(2) || p[i])
+			JPS.TOOLS.PRINT(ctx, txt, this.size, this.x, this.y, this.font, this.color, this.align, this.base, this.method)
 		}}
 	}
 	post(ctx, time, sys) {
-		var txt = this.text1.replace('%%p', sys.particles.length).replace('%%fps', Math.round(1000/sys.delta)).replace('%%ms', time*1000)
-		txt = txt.replace('%%time', ~~sys.time).replace('%%speed', sys.speed).replace('%%skip', sys.skip)
+		var txt = this.text1.replace('%%p', sys.particles.length).replace('%%fps', Math.round(1000/sys.delta)).replace('%%rt', sys.rendertime.toFixed(2))
+		txt = txt.replace('%%ft', time*1000).replace('%%time', ~~sys.time).replace('%%speed', sys.speed).replace('%%skip', sys.skip)
 		JPS.TOOLS.PRINT(ctx, txt, this.size, this.x, this.y, this.font, this.color, this.align, this.base, this.method)
 	}
 }
