@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>JPS Sample 3</title>
+		<style>
+			body { 
+				background-color: rgba(50, 50, 50, 1); 
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 1);
+				border: 2px ;
+			}
+			html, body {
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<canvas id="game-view" width="1000" height="1000">#CANVAS_ERROR</canvas>
+		
+		<script src="JPS.js"></script>
+		<script src="JPS_LIB.js"></script>
+
+		<script>
+			window.onload = function() {
+				can = document.getElementById('game-view')
+				ctx = can.getContext('2d', { alpha: false })
+	
+				w = can.width = window.innerWidth
+				h = can.height = window.innerHeight
+
+				// #########################################
+
+				system = new JPS.SYSTEM(
+					new JPS.LIB.EMITTER({x:w/2, y:h/2, w:w, h:h, rate:0, spawn:500}),
+					(magnet = new JPS.LIB.MAGNET()),
+					new JPS.LIB.CIRCLE(),
+					new JPS.LIB.INFO()
+				)
+
+				document.addEventListener('mousedown', e => magnet.charge *= -1)
+				document.addEventListener('mousemove', e => {magnet.x = e.clientX; magnet.y = e.clientY})
+
+				render()
+			}
+
+			function render(time) {
+				ctx.clearRect(0,0,w,h)
+				system.render(ctx)
+				requestAnimationFrame(render)
+			}
+		</script>
+	</body>
+</html>

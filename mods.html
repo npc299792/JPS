@@ -1,0 +1,495 @@
+<html>
+<head>
+	<title>JPS Manual</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: monospace;
+		}
+		html, body {
+			background-color: rgb(50, 50, 50);
+		}
+		div {
+			font-size: 16px;
+			color: rgb(250, 250, 250);
+			padding: 10;
+		}
+		code {
+			display: block;
+			font-size: 20px;
+			font-family: monospace;
+			background: rgb(80, 80, 80);
+			margin-top: 10;
+			padding: 10;
+			tab-size: 4;
+		}
+		table {
+			border-collapse: collapse;
+			margin-top: 10;
+			font-size: 16px;
+			color: rgb(250, 250, 250);
+			padding: 0;
+		}
+		tr:hover {
+			background-color: rgb(80, 80, 80);
+		}
+		
+		td {
+			color: rgb(250, 250, 250);
+			padding: 5;
+			border: 1px solid;
+		}
+		ul {
+			list-style: none; 
+			background: rgb(80, 80, 80);
+		}
+		ul li {
+			display: inline-block; 
+			position: relative;
+		}
+		ul li a {
+			display: block; 
+			padding: 20px 25px;
+			color: rgb(250, 250, 250);
+			text-decoration: none;
+			text-align: center;
+			font-size: 20px;
+		}
+		ul li ul.dropdown {
+			width: auto;
+			background: rgb(80, 80, 80);
+			position: absolute;
+			z-index: 10;
+			display: none;
+		}
+		ul li ul.dropdown li {
+			display: block;
+		}
+		ul li a:hover {
+			background: rgb(50, 50, 80);
+		}
+		ul li:hover ul.dropdown {
+			display: block;
+		}
+
+			
+	</style>
+
+	<script type="text/javascript">
+		selected = "overview"
+		selectPage = function(page) {
+			document.getElementById(selected).style.display = 'none';
+			document.getElementById(page).style.display = 'block';
+			selected = page;
+		}
+	</script>
+
+</head>
+
+<body>
+
+<ul>
+<li><a href="docs.html" onclick="selectPage('overview')"><< Overview</a></li>
+<li>
+	<a href="#">Drawing</a>
+	<ul class="dropdown">
+		<li><a href="#" onclick="selectPage('rectangle')">Rectangle</a></li>
+		<li><a href="#" onclick="selectPage('circle')">Circle</a></li>
+		<li><a href="#" onclick="selectPage('sphere')">Sphere</a></li>
+		<li><a href="#" onclick="selectPage('triangle')">Triangle</a></li>
+		<li><a href="#" onclick="selectPage('image')">Image</a></li>
+		<li><a href="#" onclick="selectPage('text')">Text</a></li>
+	</ul>
+</li>
+<li>
+	<a href="#">Animation</a>
+	<ul class="dropdown">
+		<li><a href="#" onclick="selectPage('emitter')">&nbsp;&nbsp;Emitter&nbsp;&nbsp;</a></li>
+		<li><a href="#" onclick="selectPage('animate')">Animate</a></li>
+		<li><a href="#" onclick="selectPage('wall')">Wall</a></li>
+		<li><a href="#" onclick="selectPage('align')">Align</a></li>
+		<li><a href="#" onclick="selectPage('magnet')">Magnet</a></li>
+		<li><a href="#" onclick="selectPage('tween')">#Tween</a></li>
+	</ul>
+</li>
+<li>
+	<a href="#">Effects</a>
+	<ul class="dropdown">
+		<li><a href="#" onclick="selectPage('camera')">Camera</a></li>
+		<li><a href="#" onclick="selectPage('visible')">Visible</a></li>
+		<li><a href="#" onclick="selectPage('backscreen')">#Backscreen</a></li>
+	</ul>
+</li>
+<li>
+	<a href="#">Development</a>
+	<ul class="dropdown">
+		<li><a href="#" onclick="selectPage('info')">Info</a></li>
+		<li><a href="#" onclick="selectPage('drag')">Drag</a></li>
+		<li><a href="#" onclick="selectPage('slider')">&nbsp;&nbsp;&nbsp;Slider&nbsp;&nbsp;&nbsp;</a></li>
+	</ul>
+</li>
+</ul>
+
+<hr>
+
+<!-- ########################################################################################################################## -->
+
+<div id="overview"><br><h1>JPS.LIB</h1><br>
+This optional library can be included with the JPS_LIB.js file and contains a few modifiers for common particle effects. <b><u>The JPS.js must be included!</u></b>
+
+<br><br>
+
+All modifiers take an optional arguments object to change their behavior, otherwise the default settings will be used.
+</div>
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+<div id="rectangle" style="display: none"><br><h1>JPS.LIB.RECTANGLE(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>w</td><td align="center">[10,10]</td><td>This width of the Rectangle.</td></tr>
+		<tr><td>h</td><td align="center">[10,10]</td><td>This height of the Rectangle.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Rectangle.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
+		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+	</table>
+</div>
+
+
+<div id="circle" style="display: none"><br><h1>JPS.LIB.CIRCLE(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Circle.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Circle.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
+		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Startangle of the circle.</td></tr>
+		<tr><td>end</td><td align="center">360</td><td>Endangle of the circle.</td></tr>
+	</table>
+</div>
+
+
+<div id="sphere" style="display: none"><br><h1>JPS.LIB.SPHERE(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Sphere.</td></tr>
+		<tr><td>gradient</td><td align="center"><i>JPS.TYPES.GRADIENT</i></td><td>Defines the gradient colorsteps of the Sphere. This is an Array containing Objects which in turn contains the following properties:<br>i: Index-value, r: Red-value, g: Green-value, b: Blue-value</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
+		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Startangle of the circle.</td></tr>
+		<tr><td>end</td><td align="center">360</td><td>Endangle of the circle.</td></tr>
+	</table>
+</div>
+
+
+<div id="triangle" style="display: none"><br><h1>JPS.LIB.TRIANGLE(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>w</td><td align="center">[10,10]</td><td>This width of the Triangle.</td></tr>
+		<tr><td>h</td><td align="center">[10,10]</td><td>This height of the Triangle.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Triangle.</td></tr>
+	</table>
+</div>
+
+
+<div id="image" style="display: none"><br><h1>JPS.LIB.IMAGE(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>src</td><td align="center"><i>undefined</i></td><td>The Sourcepath of the image.</td></tr>
+		<tr><td>image</td><td align="center"><i>undefined</i></td><td>The image object.</td></tr>
+	</table>
+</div>
+
+
+<div id="text" style="display: none"><br><h1>JPS.LIB.TEXT(data)</h1><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>size</td><td align="center">[20,10]</td><td>The height of the Text.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Text.</td></tr>
+		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the Text.</td></tr>
+		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to draw the Text.</td></tr>
+		<tr><td>text</td><td align="center">['A','B','C']</td><td>The Text that will assigned to the Particles. If this is an Array, the modifier randomly picks a value from it.</td></tr>
+	</table>
+</div>
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="emitter" style="display: none"><br><h1>JPS.LIB.EMITTER(data)</h1><br>
+	An Emitter spawns particles in a defined area and rate.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter.</td></tr>
+		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawns inside this area.</td></tr>
+		<tr><td>rate</td><td align="center">1</td><td>Defines how many Particles per second the emitter spawns.</td></tr>
+		<tr><td>spawn</td><td align="center">0</td><td>Defines how many particles spawns next frame. To spawn 50 particles u can simply set this to 50.</td></tr>
+		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particles that will spawned by this emitter. If this is an Array, the emitter randomly picks a value from it.</td></tr>
+		<tr><td>life</td><td align="center"><i>undefined</i></td><td>Defines a lifetime for particles spawned by this emitter. Can be randomized like [8000,2000] to set a lifetime between 6 and 10 seconds.</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="animate" style="display: none"><br><h1>JPS.LIB.ANIMATE(data)</h1><br>
+	The Animate modifier allows you to animate every numeric property of the particles.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="300" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>This string defines the label of this modifier. The animation value will be saved as <i>id + propertyname</i> in the particle.</td></tr>
+		<tr><td>data</td><td align="center"><i>{x:[0,100], y:[0,100]}</i></td><td>An object that contains the animation values per second. To randomize the values u can define an Array, x:[0,100] will generate a random value between -100 and 100.</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="align" style="display: none"><br><h1>JPS.LIB.ALIGN(data)</h1><br>
+	This modifier rotates the particles in the direction they move or to a target.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="300" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>The animation label to get the direction.</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If this is defined, the particle rotates to this object. It must have <i>x</i> and <i>y</i> properties!</td></tr>
+		<tr><td>offset</td><td align="center">0</td><td>Adds a offset to the rotation (in radiant).</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="magnet" style="display: none"><br><h1>JPS.LIB.MAGNET(data)</h1><br>
+	Pulls or pushes particles in its radius.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="300" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">''</td><td>The animation label to apply force. With '' it affects the <i>x</i> and <i>y</i> properties directly.</td></tr>
+		<tr><td>x,y</td><td align="center">0</td><td>The x and y position of the magnet.</td></tr>
+		<tr><td>radius</td><td align="center">300</td><td>The radius of the magnet.</td></tr>
+		<tr><td>charge</td><td align="center">-20</td><td>The charge of the magnet. Opposite charges pulls, same charges pushes each other.</td></tr>
+		<tr><td>pcharge</td><td align="center">[20,10]</td><td>Defines a charge for the particles, this property will be stored as <i>charge</i> in the particle itself.</td></tr>
+		<tr><td>pow</td><td align="center">1</td><td>This integer defines the shape of the magnet field. 1: Linear, 2: Quadratic, 3: Cubic ...</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If this is defined, the magnet is connect to the position of this object. It must have <i>x</i> and <i>y</i> properties!</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="camera" style="display: none"><br><h1>JPS.LIB.CAMERA(data)</h1><br>
+	The Camera allows you to change the viewport and also enables 3D perception.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>x,y,z</td><td align="center">0</td><td>The position of the camera.</td></tr>
+		<tr><td>depth</td><td align="center">2000</td><td>The rendering depth. Particles with a z-distance > depth are not visible anymore.</td></tr>
+		<tr><td>fov</td><td align="center"><i>Math.PI/2</i></td><td>The viewing field in radiant.</td></tr>
+		<tr><td>center</td><td align="center"><i>{x:window.innerWidth/2,y:window.innerHeight/2}</i></td><td>The output position on the canvas.</td></tr>
+		<tr><td>mode</td><td align="center">2</td><td>This value will be returned from the render method when the particle is behind the camera.</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="wall" style="display: none"><br><h1>JPS.LIB.WALL(data)</h1><br>
+	Creates a wall in the system to block particles. The collision detection isnt accurate but should work for the most situations.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>The animation label, be sure its the same as in your Animate modifier, otherwise collisions have no effect.</td></tr>
+		<tr><td>x,y</td><td align="center">0</td><td>The position of the wall.</td></tr>
+		<tr><td>w,h</td><td align="center">100</td><td>The <u>w</u>idth and <u>h</u>eight of the wall.</td></tr>
+		<tr><td>bounce</td><td align="center"><i>0.6</i></td><td>Defines the new velocity of the particle after a collision (1 = 100%). Can be randomized, like [1, 0.5].</td></tr>
+		<tr><td>size</td><td align="center"><i>undefined</i></td><td>Defines the size of the line. If this is <i>undefined</i> or 0, nothing will draw. Can't changed during runtime!</td></tr>
+		<tr><td>color</td><td align="center"><i>'red'</i></td><td>If <i>size</i> is defined, this will set the color of the line.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>A callback function that will be called when a particle hits the wall, it delievers the arguments: (particle, system, wall).</td></tr>
+	</table>
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="info" style="display: none"><br><h1>JPS.LIB.INFO(data)</h1><br><br>
+	This modifier is intended for debugging, it allows you to print informations on the screen or besides Particles.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>text1</td><td align="center">'fps: %%fps  /  particles: %%p'</td><td>This text will be printed on the canvas and supports the special signs listed below. Set to <i>undefined</i> to deactivate.</td></tr>
+		<tr><td>text2</td><td align="center">undefined</td><td>This text will be printed besides every particle. To print out a property, insert %%propertyname in the text. This method isn't optimized and should only used for debugging!</td></tr>
+		<tr><td>x,y</td><td align="center">20</td><td>The position of the text. For <i>text2</i> this is the relative position to the particle.</td></tr>
+		<tr><td>size</td><td align="center">15</td><td>The height of the text. Set to <i>undefined</i> to use the canvas fontsize.</td></tr>
+		<tr><td>color</td><td align="center"><i>'grey'</i></td><td>The color of the text. Set to <i>undefined</i> to use the canvas color.</td></tr>
+		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the text. Set to <i>undefined</i> to use the canvas fonttype.</td></tr>
+		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to print the text.</td></tr>
+		<tr><td>digits</td><td align="center">2</td><td>The amount of decimal places.</td></tr>
+	</table>
+	
+	<br><br>
+
+	Special signs for <i>text1</i>
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>%%p</td><td>The amount of particles in the system.</td></tr>
+		<tr><td>%%fps</td><td>The current frames per second.</td></tr>
+		<tr><td>%%rt</td><td>The rendertime in milliseconds. This does <u>not</u> includes the prev and post modifiers.</td></tr>
+		<tr><td>%%ft</td><td>The frametime in milliseconds.</td></tr>
+		<tr><td>%%time</td><td>The time the system is running.</td></tr>
+		<tr><td>%%speed</td><td>The current speed the system.</td></tr>
+		<tr><td>%%skip</td><td>The amount of particles that skipped in the last render process.</td></tr>
+	</table>
+</div>
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+<div id="drag" style="display: none"><br><h1>JPS.LIB.DRAG(data)</h1><br><br>
+	Adds a common mouse-navigation for the system like in Google Maps. Click and Drag to move screen, use Mousewheel to zoom. Press Space to pause the system. 
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>button</td><td align="center">0</td><td>The Mousebutton to use drag.</td></tr>
+		<tr><td>dragspeed</td><td align="center">1</td><td>The velocity to drag the screen.</td></tr>
+		<tr><td>zoomspeed</td><td align="center">1</td><td>Zoomvelocity for the mousewheel.</td></tr>
+		<tr><td>pause</td><td align="center">'Space'</td><td>The key to toggle pause.</td></tr>
+		<tr><td>exclude</td><td align="center"><i>undefined</i></td><td>This can be an object or an Array with objects that contains <i>x</i>, <i>y</i>, <i>w</i> and <i>h</i> properties to define areas on the canvas where the drag option cannot be used.</td></tr>
+	</table>
+
+</div>
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+<div id="slider" style="display: none"><br><h1>JPS.LIB.SLIDER(data)</h1><br><br>
+	Adds a scroller to control a property of a given object.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>x,y</td><td align="center">5</td><td>The position of the slider.</td></tr>
+		<tr><td>w,h</td><td align="center">250,25</td><td>The width and height of the slider.</td></tr>
+		<tr><td>vertical</td><td align="center"><i>undefined</i></td><td>If this value is true, the slider will be rotated by 90 degrees.</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>The object that will be controlled. If this is undefined, it automatically selects the system as the target when added.</td></tr>
+		<tr><td>prop</td><td align="center">'x'</td><td>The name of the property of the target object that will be changed.</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Start value of the slider (left).</td></tr>
+		<tr><td>end</td><td align="center">100</td><td>End value of the slider (right).</td></tr>
+		<tr><td>text</td><td align="center">'%%value'</td><td>The caption of the slider. Insert '%%value' to display the current slider value.</td></tr>
+		<tr><td>color1</td><td align="center">'white'</td><td>The foreground color.</td></tr>
+		<tr><td>color2</td><td align="center">'grey'</td><td>Background color.</td></tr>
+		<tr><td>line</td><td align="center">2</td><td>Line thickness.</td></tr>
+		<tr><td>margin</td><td align="center">5</td><td>Margin between slider and frame.</td></tr>
+		<tr><td>slider</td><td align="center">.1</td><td>The width of the slider inside the frame (1 = 100%).</td></tr>
+		<tr><td>digits</td><td align="center">2</td><td>The amount of decimals used to display '%%value' in the <i>text</i>.</td></tr>
+		<tr><td>font</td><td align="center">'Arial'</td><td>The font that will be used to print the <i>text</i>.</td></tr>
+	</table>
+
+</div>
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="visible" style="display: none"><br><h1>JPS.LIB.VISIBLE(data)</h1><br><br>
+	Does a visibility and mouseover check and stores it as <i>visible</i> and <i>mouseover</i> properties inside the particle. 
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>mode</td><td align="center">2</td><td>This value is returned by the render function when a particle fails the visibility test. 0: Nothing, 1: Delete particle, 2: Skip render process.</td></tr>
+	</table>
+	
+	<br><br>
+	
+	Besides that this modifier has some properties...
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>select</td><td>The current selected particle under the mouse, available after the render process.</td></tr>
+		<tr><td>x,y</td><td>Contains the current <u><b>transformed</b></u> mouseposition in the system. This allows u to use this modifier as a <i>target</i> for some other modifiers, like Magnet or Align.</td></tr>
+		<tr><td>mx,my</td><td>Contains the current mouseposition on the canvas.</td></tr>
+	</table>
+
+</div>
+
+
+
+</body>
+</html>

@@ -97,41 +97,28 @@
 <li><a href="#" onclick="selectPage('system')">System</a></li>
 <li><a href="#" onclick="selectPage('particles')">Particles</a></li>
 <li><a href="#" onclick="selectPage('modifiers')">Modifiers</a></li>
-<li><a href="#">#Randomization</a></li>
-<li>
-	<a href="#">LIB</a>
-	<ul class="dropdown">
-		<li><a href="#" onclick="selectPage('emitter')">Emitter</a></li>
-		<li><a href="#" onclick="selectPage('animate')">Animate</a></li>
-		<li><a href="#" onclick="selectPage('camera')">Camera</a></li>
-		<li><a href="#" onclick="selectPage('wall')">Wall</a></li>
-		<li><a href="#" onclick="selectPage('info')">Info</a></li><hr>
-		<li><a href="#" onclick="selectPage('draws')">Draw Modifiers</a></li>
-	</ul>
-</li>
+<li><a href="#" onclick="selectPage('random')">Randomization</a></li>
+<li><a href="#" onclick="selectPage('about')">About</a></li>
 <li>
 	<a href="#">Samples</a>
 	<ul class="dropdown">
-		<li><a href="#" onclick="selectPage('stars')">Starfield</a></li>
-		<li><a href="#" onclick="selectPage('balls')">Bouncing Balls</a></li>
+		<li><a href="#" onclick="selectPage('smp_stars')">Starfield</a></li>
+		<li><a href="#" onclick="selectPage('smp_balls')">Bouncing Balls</a></li>
+		<li><a href="#" onclick="selectPage('smp_magnet')">Magnet</a></li>
+		<li><a href="#" onclick="selectPage('smp_space')">Spacerace</a></li>
 	</ul>
 </li>
-<li><a href="#">#About</a></li>
+<li><a href="mods.html">Library >></a></li>
 </ul>
 
 <hr>
 
-
 <!-- ########################################################################################################################## -->
 
-<center><font color="#FF0000"><br><h1><u>WORK IN PROGRESS!!!</u></h1></font></center>
+<div id="overview"><br><h1>JPS - Javascript Particle System</h1><br>
+	This is a lightweight modular Particlesystem for Javascript, the focus during the development was on efficiency, flexibility and usability. The main file is only 3kb and has just around 100 lines of code (without empty & comment lines) but offers all possibilities u need for creating your animations, from simple effects over scientific simulations upto full games!<br><br><br>
 
-<!-- ########################################################################################################################## -->
-
-<div id="overview"><h1>JPS - Javascript Particle System</h1><br>
-	This is a lightweight Open Source Particlesystem for Javascript, the focus during the development was on efficiency, flexibility and usability. The Main File is only 3kb and has less than 100 lines of code (without empty & comment lines) but offers all possibilities u need for creating your animations, from simple effects over scientific simulations upto full games!<br><br><br>
-
-	<h1>Basic Implementation</h1>
+	<h1>Basic Implementation:</h1>
 
 	<pre><code>window.onload = function() {
 	can = document.getElementById('myCanvas')
@@ -142,7 +129,7 @@
 }
 
 function render() {
-	ctx.clearRect(0, 0, can.width, can.height)	<font color="#AAAAAA">//clear the canvas</font>
+	ctx.clearRect(0, 0, can.width, can.height)	<font color="#AAAAAA">//clear the canvas (if u want)</font>
 	system.render(ctx)							<font color="#AAAAAA">//render the particlesystem</font>
 
 	requestAnimationFrame(render)
@@ -160,21 +147,16 @@ function render() {
 
 
 
-<div id="system" style="display: none">
-	<h1>Methods</h1>
+<div id="system" style="display: none"><br><h1>Methods</h1>
 
 	<table width="100%">
-		<tr><td width="200">spawn(count, ctx)</td><td>Spawns the given <i>count</i> of particles in the system. The <i>ctx</i> (Canvas 2D context) is only required if u use it in a <i>init()</i> method in one of your modifiers. Returns the last created Particle.</td></tr>
-
-		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete multiple particles by its instance use the <i>removeParticles()</i> method. The <i>ctx</i> is only required if u use it in a <i>exit()</i> method in one of your modifiers.</td>
-
+		<tr><td width="250">spawn(count, ctx, props)</td><td>Spawns the given <i>count</i> of particles in the system. The <i>ctx</i> (Canvas 2D context) is only required if u use it in a <i>init()</i> method in one of your modifiers. <i>props</i> is an optional Object with properties that will be copied into the generated particles before the <i>init()</i> methods are called. Returns a Array with the created Particles, if only 1 Particle is created it returns the Particle itself.</td></tr>
 		<tr><td>clear(particles, modifiers)</td><td>Deletes all particles and/or modifiers from the system.</td>
-
+		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete one or multiple particles by its instance use the <i>removeParticle()</i> method. The <i>ctx</i> is only required if u need it in a <i>exit()</i> method in one of your modifiers.</td>
 		<tr><td>render(ctx, time)</td><td>Renders the whole system on the given <i>ctx</i>. <i>time</i> defines the passed time since the last rendering in milliseconds (Default: 16.66 = 60fps). This method also can called without the <i>ctx</i> parameter, be sure the <i>render()</i> methods of your modifiers are prepared for it.</td>
-
-		<tr><td>addModifier(...args)</td><td>Adds the given modifiers to the system. If a modifier has a init method, it will ba called with all existing particles.</td>
-		<tr><td>removeModifier(...args)</td><td>Removes the given modifiers from the system.</td>
-		<tr><td>removeParticle(...args)</td><td>Removes the given particles from the system. U can pass the particle objects itself or their index.</td>
+		<tr><td>addModifier(...args)</td><td>Adds the given modifiers to the system. Also accepts Arrays with modifiers.<br><br>If a modifier has a init method and the system already has particles, the init method will be called with all existing particles. If a modifier needs the ctx in the init method u need to deliver it manually via the arguments:<br><font color="#AAAAAA">system.addModifier(ctx, mod1, mod2, ...) // sets the ctx for all following modifiers</font></td>
+		<tr><td>removeModifier(...args)</td><td>Removes the given modifiers from the system. Also accepts Arrays with modifiers.</td>
+		<tr><td>removeParticle(...args)</td><td>Removes the given particles from the system. U can pass the particle objects itself or their index. Also accepts Arrays with particles or their indexes.<br><br>If one of your modifiers needs the ctx in the exit method u need to deliver it manually via the arguments:<br><font color="#AAAAAA">system.removeParticle(ctx, p1, p2, ...) // sets the ctx for all following particles</font></td>
 	</table><br><br>
 
 
@@ -186,6 +168,7 @@ function render() {
 		<tr><td>s</td><td align="center">1</td><td>The scale of system (1 = 100%).</td></tr>
 		<tr><td>time</td><td align="center">0</td><td>The Time the system is already running (in milliseconds).</td></tr>
 		<tr><td>speed</td><td align="center">1</td><td>The animationspeed of the system (1 = 100%).</td></tr>
+		<tr><td>max</td><td align="center"><i>undefined</i></td><td>Sets a limit of particles in the system. If this is 0, <i>undefined</i> or <i>false</i>, the amount is unlimited.</td></tr>
 		<tr><td>rendertime</td><td align="center"><i>undefined</i></td><td>The rendertime in milliseconds. This does <u>not</u> includes the prev and post modifiers.</td></tr>
 		<tr><td>skip</td><td align="center">0</td><td>Counts how many particles skipped the render process in the last rendering.</td></tr>
 		<tr><td>particles</td><td align="center"><i>Array</i></td><td>Contains all particles of the system.</td></tr>
@@ -201,11 +184,8 @@ function render() {
 
 
 
-
-
-<div id="particles" style="display: none"><h1>Particles</h1><br>
-	Each particle is a simple Javascript Object that will be stored in the <i>system.particles</i> Array. To be sure every particle will be correctly initiated u should always create them with the <i>system.spawn()</i> method. U can also add them manually to the Array but in this case it will be not initialized with the modifiers, 
-	its also not garanteed that all needed properties are existing...
+<div id="particles" style="display: none"><br><h1>Particles</h1><br>
+	Each particle is a simple Javascript Object that will be stored in the <i>system.particles</i> Array. To be sure every particle will be correctly initiated u should always create them with the <i>system.spawn()</i> method.
 
 	<br><br>
 
@@ -215,13 +195,13 @@ function render() {
 		<tr><td>y</td><td align="center">0</td><td>The Y-Position of the particle.</td></tr>
 		<tr><td>s</td><td align="center">1</td><td>The scale of the particle (1 = 100%).</td></tr>
 		<tr><td>r</td><td align="center">0</td><td>The rotation of the particle (in radient, Math.PI = 180°).</td></tr>
-		<tr><td>xs</td><td align="center">1</td><td>The X-Scale of the particle.</td></tr>
-		<tr><td>ys</td><td align="center">1</td><td>The Y-Scale of the particle.</td></tr>
+		<tr><td>sx</td><td align="center">1</td><td>The X-Scale of the particle.</td></tr>
+		<tr><td>sy</td><td align="center">1</td><td>The Y-Scale of the particle.</td></tr>
 		<tr><td>rx</td><td align="center">0</td><td>The X-Rotation of the particle.</td></tr>
 		<tr><td>ry</td><td align="center">0</td><td>The Y-Rotation of the particle.</td></tr>
 		<tr><td>age</td><td align="center">0</td><td>The time the particle already exist (in Milliseconds).</td></tr>
 		<tr><td>life</td><td align="center"><i>undefined</i></td><td>The lifetime of the particle (in Milliseconds). Is this <i>undefined</i> or 0, the particle will not removed automatically.</td></tr>
-		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particle, can be a String or a Number. A Particle only interacts with modifiers of the same type.</td></tr>
+		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particle, can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. A Particle only interacts with modifiers of the same type, if this is undefined / null / false / 0, the particle will interact with all modifiers whatever type it has.</td></tr>
 	</table>
 </div>
 
@@ -233,8 +213,7 @@ function render() {
 
 
 
-
-<div id="modifiers" style="display: none"><h1>Modifiers</h1><br>
+<div id="modifiers" style="display: none"><br><h1>Modifiers</h1><br>
 	A modifier can be every Javascript Object that contains atleast 1 of the following functions...
 
 	<br><br>
@@ -243,12 +222,25 @@ function render() {
 		<tr><th width="200">Name</th><th>Description</th></tr>
 		<tr><td>init(particle, ctx, system)</td><td>Will be invoked when the particle is initiated. All particle properties have their default values at that point.</td></tr>
 		<tr><td>render(particle, ctx, time, system)</td><td>Will be invoked when the particle is rendered. <i>time</i> defines the past time since the last rendering as a multiplier. This function can return 2 values, if it's returning 1 the particle will be deleted, if it returns 2 the render process for this particle will be skipped. In both cases <i>system.skip</i> will be incremented.<br><br>
-		<font color="red"><u>Important:</u> </font> When this function is called the canvas is already fully transformed to the particle properties! If u draw something keep in mind to draw at the coordinates 0,0 to draw it at its actual position.
+		<font color="red"><u>Important:</u> </font> When this function is called the canvas is already fully transformed to the particle properties! If u draw something at the coordinates 0,0 it will be drawn at the x and y coordinates of the particle.
 		</td></tr>
 		<tr><td>exit(particle, ctx, system)</td><td>Will be invoked when the particle is being deleted.</td></tr>
 		<tr><td>prev(ctx, system, time)</td><td>Will be invoked before the rendering starts.</td></tr>
 		<tr><td>post(ctx, system, time)</td><td>Will be invoked after the rendering is done.</td></tr>
 	</table>
+
+	<br><br>
+
+	A modifier also can have these 2 optional functions...
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>add(system)</td><td>Will be invoked when the modifier is added to a system.</td></tr>
+		<tr><td>remove(system)</td><td>Will be invoked when the modifier is removed to a system.</td></tr>
+	</table>
+
 
 	<br><br>
 
@@ -271,6 +263,21 @@ function render() {
 		<br><br>
 		system.removeModifier(mod1, mod2, ...)
 	</code>
+
+	<br><br><hr><br>
+
+	<h1>Order</h1><br>
+
+	Modifiers will be executed in the same order as they added, this can be important depending what the modifier does. Usally the following order is a good way...
+	<br><br>
+	1. Animation<br>
+	2. Interaction<br>
+	3. Drawing<br>
+
+	<br><br><hr><br>
+
+	<h1>Types</h1><br>
+	Every Modifier can have a <i>type</i> property to define the type of particle to interact with, this can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. U also can define a array with a list of types to group them. A modifier with the type undefined / null / false / 0 will interact with all particles.
 
 	<br><br><hr><br>
 
@@ -317,19 +324,32 @@ system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
 
 
 
-<div id="emitter" style="display: none"><h1>Emitter</h1><br>
-	An Emitter spawns particles in a defined area and rate.
+<div id="random" style="display: none"><br><h1>Randomization</h1><br>
+	A important part of every Particlesystem is the randomization, without it all particles would exactly do the same. To support it the JPS Object contains a helpful function:
 
 	<br><br>
 
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter.</td></tr>
-		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawns inside this area.</td></tr>
-		<tr><td>rate</td><td align="center">1</td><td>Defines how many Particles per second the emitter spawns.</td></tr>
-		<tr><td>spawn</td><td align="center">0</td><td>Defines how many particles spawns next frame. To spawn 50 particles u can simply add 50 to this value.</td></tr>
-		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particles that will spawned by this emitter. If this is an Array, the emitter randomly picks a value from it.</td></tr>
-	</table>
+	<h2>JPS.TOOLS.RND(value, range, integer)</h2><br>
+
+	<pre><code>
+JPS.TOOLS.RND()				<font color="#AAAAAA">// returns 0</font>
+JPS.TOOLS.RND(5)			<font color="#AAAAAA">// returns 5</font>
+JPS.TOOLS.RND(5,5)			<font color="#AAAAAA">// returns a value between 0 and 10</font>
+JPS.TOOLS.RND(20,10,1)		<font color="#AAAAAA">// returns a integer between 10 and 30</font>
+
+<font color="#AAAAAA">// u can also pass an array</font>
+JPS.TOOLS.RND([50,5])		// returns a value between 45 and 55
+JPS.TOOLS.RND([100,50,1])	// returns a integer between 50 and 150
+
+<font color="#AAAAAA">// pass an object to create a random color</font>
+JPS.TOOLS.RND({r:[100,100], a:[0.6,0.3]})
+JPS.TOOLS.RND({r:255, g:[128,128], b:[128,128], a:1})
+
+<font color="#AAAAAA">// if u pass an array that first entry is <u>not</u> a <i>Number</i>, it will choose a random entry of it</font>
+JPS.TOOLS.RND(['red','green','blue'])	<font color="#AAAAAA">// returns red, green or blue</font>
+JPS.TOOLS.RND([[15,5],[45,5]])			<font color="#AAAAAA">// returns a value between 10-20 or 40-50</font>
+	</code></pre>
+
 </div>
 
 
@@ -340,187 +360,8 @@ system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
 
 
 
-<div id="animate" style="display: none"><h1>Animate</h1><br>
-	The Animate modifier allows you to animate every numeric property of the particles.
 
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="300" align="center">Default</th><th>Description</th></tr>
-		<tr><td>id</td><td align="center">'v'</td><td>This string defines the label of this modifier. The animation value will be saved as <i>id + propertyname</i> in the particle.</td></tr>
-		<tr><td>data</td><td align="center"><i>{x:[0,100], y:[0,100]}</i></td><td>An object that contains the animation values per second. To randomize the values u can define an Array, x:[0,100] will generate a random value between -100 and 100.</td></tr>
-	</table>
-</div>
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="camera" style="display: none"><h1>Camera</h1><br>
-	The Camera allows you to change the viewport and also enables 3D perception.
-
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>x,y,z</td><td align="center">0</td><td>The position of the camera.</td></tr>
-		<tr><td>depth</td><td align="center">2000</td><td>The rendering depth. Particles with a z-distance > depth are not visible anymore.</td></tr>
-		<tr><td>fov</td><td align="center"><i>Math.PI/2</i></td><td>The viewing field in radiant.</td></tr>
-		<tr><td>center</td><td align="center"><i>{x:window.innerWidth/2,y:window.innerHeight/2}</i></td><td>The output position on the canvas.</td></tr>
-		<tr><td>mode</td><td align="center">2</td><td>This value will be returned from the render method when the particle is behind the camera.</td></tr>
-	</table>
-</div>
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="wall" style="display: none"><h1>Wall</h1><br>
-	Creates a wall in the system to block particles. The collision detection isnt accurate but should work for the most situations.
-
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>id</td><td align="center">'v'</td><td>The animation label, be sure its the same as in your Animate modifier, otherwise collisions have no effect.</td></tr>
-		<tr><td>x,y</td><td align="center">0</td><td>The position of the wall.</td></tr>
-		<tr><td>w,h</td><td align="center">100</td><td>The <u>w</u>idth and <u>h</u>eight of the wall.</td></tr>
-		<tr><td>bounce</td><td align="center"><i>0.6</i></td><td>Defines the new velocity of the particle after a collision (1 = 100%).</td></tr>
-		<tr><td>size</td><td align="center"><i>undefined</i></td><td>Defines the size of the line. If this is <i>undefined</i> or 0, nothing will draw. Can't changed during runtime!</td></tr>
-		<tr><td>color</td><td align="center"><i>'red'</i></td><td>If <i>size</i> is defined, this will set the color of the line.</td></tr>
-	</table>
-</div>
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="info" style="display: none"><h1>Info</h1><br>
-	This modifier is intended for debugging, it allows you to print informations on the screen.
-
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>text1</td><td align="center">'fps: %%fps  /  particles: %%p'</td><td>This text will be printed on the canvas and supports the special signs listed below. Set to <i>undefined</i> to deactivate.</td></tr>
-		<tr><td>text2</td><td align="center">undefined</td><td>This text will be printed besides every particle. To print out a property, insert %%propertyname in the text. This method isn't optimized and should only used for debugging!</td></tr>
-		<tr><td>x,y</td><td align="center">20</td><td>The position of the text. For <i>text2</i> this is the relative position to the particle.</td></tr>
-		<tr><td>size</td><td align="center">15</td><td>The height of the text. Set to <i>undefined</i> to use the canvas fontsize.</td></tr>
-		<tr><td>color</td><td align="center"><i>'grey'</i></td><td>The color of the text. Set to <i>undefined</i> to use the canvas color.</td></tr>
-		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the text. Set to <i>undefined</i> to use the canvas fonttype.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to print the text.</td></tr>
-	</table>
-	
-	<br><br>
-
-	Special signs for <i>text1</i>
-
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th>Description</th></tr>
-		<tr><td>%%p</td><td>The amount of particles in the system.</td></tr>
-		<tr><td>%%fps</td><td>The current frames per second.</td></tr>
-		<tr><td>%%rt</td><td>The rendertime in milliseconds. This does <u>not</u> includes the prev and post modifiers.</td></tr>
-		<tr><td>%%ft</td><td>The frametime in milliseconds.</td></tr>
-		<tr><td>%%time</td><td>The time the system is running.</td></tr>
-		<tr><td>%%speed</td><td>The current speed the system.</td></tr>
-		<tr><td>%%skip</td><td>The amount of particles that skipped in the last render process.</td></tr>
-	</table>
-</div>
-
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="draws" style="display: none"><h1>Draw Modifiers</h1><br>
-	The Draw Modifiers offers a few basic Particles. Keep in mind that u always can pass a Array for every value to define a randomization.
-
-	<br><br>
-
-	<h1>Rectangle</h1><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>w</td><td align="center">[10,10]</td><td>This width of the Rectangle.</td></tr>
-		<tr><td>h</td><td align="center">[10,10]</td><td>This height of the Rectangle.</td></tr>
-		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Rectangle.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fillRect'</i></td><td>Defines the method to to draw the Rectangle.</td></tr>
-	</table>
-	
-	<br><br>
-
-	<h1>Circle</h1><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Circle.</td></tr>
-		<tr><td>gradient</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Circle.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fill'</i></td><td>Defines the method to to draw the Circle.</td></tr>
-	</table>
-	
-	<br><br>
-
-	<h1>Sphere</h1><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Sphere.</td></tr>
-		<tr><td>gradient</td><td align="center"><i>JPS.TYPES.GRADIENT</i></td><td>Defines the colorsteps of the Sphere. This is an Array containing Objects which in turn contains the following properties:<br>i: Index-value, r: Red-value, g: Green-value, b: Blue-value</td></tr>
-	</table>
-	
-	<br><br>
-
-	<h1>Image</h1><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>src</td><td align="center"><i>undefined</i></td><td>The Sourcepath of the image.</td></tr>
-		<tr><td>image</td><td align="center"><i>undefined</i></td><td>The image object.</td></tr>
-	</table>
-	
-	<br><br>
-
-	<h1>Text</h1><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>size</td><td align="center">[20,10]</td><td>The height of the Text.</td></tr>
-		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Text.</td></tr>
-		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the Text.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to to draw the Text.</td></tr>
-		<tr><td>text</td><td align="center">['A','B','C']</td><td>The Text that will assigned to the Particles. If this is an Array, the modifier randomly picks a value from it.</td></tr>
-	</table>
-</div>
-
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-
-<div id="stars" style="display: none"><h1>Starfield</h1><br>
+<div id="smp_stars" style="display: none"><br><h1>Starfield</h1><br>
 
 	<pre><code>
 system = new JPS.SYSTEM(
@@ -545,17 +386,17 @@ system = new JPS.SYSTEM(
 
 
 
-
-<div id="balls" style="display: none"><h1>Bouncing Balls</h1><br>
+<div id="smp_balls" style="display: none"><br><h1>Bouncing Balls</h1><br>
 
 	<pre><code>
 system = new JPS.SYSTEM(
+	new JPS.LIB.EMITTER({x:500, y:100, w:5, h:5, rate:10, life:10000}),
+	new JPS.LIB.ANIMATE({x:[0,200], y:[0,200], vy:500}),
+
 	new JPS.LIB.WALL({x:200, y:400, w:200, h:100, color:'yellow'}),
 	new JPS.LIB.WALL({x:600, y:700, w:200, h:-100, color:'green'}),
 	new JPS.LIB.WALL({x:200, y:800, w:600, h:0, color:'blue'}),
 
-	new JPS.LIB.EMITTER({x:500, y:100, w:5, h:5, rate:10, life:10000}),
-	new JPS.LIB.ANIMATE({x:[0,200], y:[0,200], vy:500}),
 	new JPS.LIB.CIRCLE({s:[1,1]})
 )
 	</pre></code>
@@ -573,6 +414,105 @@ system = new JPS.SYSTEM(
 <!-- ########################################################################################################################## -->
 
 
+
+<div id="smp_magnet" style="display: none"><br><h1>Magnet</h1><br>
+
+	<pre><code>
+system = new JPS.SYSTEM(
+	new JPS.LIB.EMITTER({x:w/2, y:h/2, w:w, h:h, rate:0, spawn:500}),
+	(magnet = new JPS.LIB.MAGNET()),
+	new JPS.LIB.CIRCLE(),
+	new JPS.LIB.INFO()
+)
+
+document.addEventListener('mousedown', e => magnet.charge *= -1)
+document.addEventListener('mousemove', e => {magnet.x = e.clientX; magnet.y = e.clientY})
+	</pre></code>
+
+	<br><br>
+
+	<center>
+		Move the mouse over the screen, click to switch polarity<br>
+		<a href="sample3.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+	</center>
+
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="smp_space" style="display: none"><br><h1>Spacerace</h1><br>
+
+	<pre><code>
+system = new JPS.SYSTEM(
+	new JPS.LIB.EMITTER({type:1, x:[w*.75,200], y:[h/2,100], rate:0, spawn:100}),
+
+	(magnet = new JPS.LIB.MAGNET({type:1, id:'v', x:w/2, y:h/2, radius:50000, charge:-20, pcharge:5, pow:2})),
+	new JPS.LIB.ANIMATE({type:1, x:0, y:[-150,1]}),
+	new JPS.LIB.ALIGN(),
+			
+	new JPS.LIB.DRAG({exclude:{x:0, y:0, w:300, h:100}}),
+	new JPS.LIB.TRIANGLE({type:1, w:[15,5], h:[8,4]}),
+	new JPS.LIB.SPHERE({type:2, radius:[20,10]}),
+
+	new JPS.LIB.SLIDER({prop:'speed', y:30, start:-5, end:5, text:'Speed: %%value'}),
+	new JPS.LIB.SLIDER({target:magnet, prop:'charge', y:60, start:-100, end:0, text:'Charge: %%value'}),
+	new JPS.LIB.INFO()
+)
+
+system.spawn(1, ctx, {type:2, radius:50, x:w/2, y:h/2}) <font color="#AAAAAA">// add a single star</font>
+	</pre></code>
+
+	<br><br>
+
+	<center>
+		Click and drag to move screen, use mousewheel to zoom<br>
+		<a href="sample4.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+	</center>
+
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
+
+<div id="about" style="display: none"><br><h1><u>License</u></h1><br>
+
+	<pre><code>
+		MIT License
+
+		Copyright (c) 2023 npc299792
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the "Software"), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+		
+		The above copyright notice and this permission notice shall be included in all
+		copies or substantial portions of the Software.
+		
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+	</pre></code>
+
+
+</div>
 
 
 
