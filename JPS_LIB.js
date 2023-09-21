@@ -330,15 +330,15 @@ JPS.LIB.VISIBLE = class {
 		this.mx = e.clientX
 		this.my = e.clientY
 	}
-	init(p) {
-		this.render(p)
+	init(p,ctx) {
+		this.render(p,ctx)
 	}
 	prev(ctx, time, sys) {
 		this.select = null
 		this.x = (this.mx-sys.x) / sys.s; this.y = (this.my-sys.y) / sys.s
 		if (ctx) { this.w = ctx.canvas.width; this.h = ctx.canvas.height }
 	}
-	render(p,ctx) {
+	render(p, ctx) {
 		var w = (p.w&&p.w/2)||p.radius||20, h = (p.h&&p.h/2)||p.radius||20
 		p.visible = JPS.TOOLS.INBOUND(p.x-w/2, p.y-h/2, w, h, 0, 0, this.w || ctx.canvas.width, this.h || ctx.canvas.width)
 		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, 0, 0, this.w, this.h)
