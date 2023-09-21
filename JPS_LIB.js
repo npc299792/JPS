@@ -39,6 +39,13 @@ JPS.TOOLS.RNDASN = function(d, ...a) {
 	return d
 }
 
+JPS.TOOLS.LINE = (ctx, x, y, w, h, stroke, size) => {
+	if (stroke) ctx.strokeStyle = stroke
+	if (size) ctx.lineWidth = size
+	ctx.beginPath(); ctx.moveTo(x, y)
+	ctx.lineTo(x+w, y+h); ctx.stroke()
+}
+
 JPS.TOOLS.RECT = (ctx, x, y, w, h, fill, stroke, size, round) => {
 	if (fill) ctx.fillStyle = fill
 	if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = size||1 }
@@ -235,9 +242,7 @@ JPS.LIB.WALL = class {
 	constructor(data) {
 		Object.assign(this, JPS.TYPES.WALL, data)
 		this.post = this.color && function(ctx,time,sys) { if (ctx) {
-			ctx.strokeStyle = this.color; ctx.lineWidth = this.size * sys.s
-			ctx.beginPath(); ctx.moveTo(this.x + sys.x, this.y + sys.x); 
-			ctx.lineTo(this.x + sys.x + this.w, this.y + sys.x + this.h); ctx.stroke()
+			JPS.TOOLS.LINE(ctx, this.x + sys.x, this.y + sys.x, this.w, this.h, this.color, this.size * sys.s)
 		}}
 	}
 	render(p, ctx, time, sys) {
@@ -330,17 +335,17 @@ JPS.LIB.VISIBLE = class {
 		this.mx = e.clientX
 		this.my = e.clientY
 	}
-	init(p,ctx) {
-		this.render(p,ctx)
+	init(p, ctx, sys) {
+		this.render(p,ctx,0,sys)
 	}
 	prev(ctx, time, sys) {
 		this.select = null
 		this.x = (this.mx-sys.x) / sys.s; this.y = (this.my-sys.y) / sys.s
 		if (ctx) { this.w = ctx.canvas.width; this.h = ctx.canvas.height }
 	}
-	render(p, ctx) {
+	render(p, ctx, time, sys) {
 		var w = (p.w&&p.w/2)||p.radius||20, h = (p.h&&p.h/2)||p.radius||20
-		p.visible = JPS.TOOLS.INBOUND(p.x-w/2, p.y-h/2, w, h, 0, 0, this.w || ctx.canvas.width, this.h || ctx.canvas.width)
+		p.visible = JPS.TOOLS.INBOUND(p.x-w/2, p.y-h/2, w, h, -sys.x, -sys.y, (this.w || ctx.canvas.width)/sys.s, (this.h || ctx.canvas.widt)/sys.s)
 		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, 0, 0, this.w, this.h)
 		p.mouseover && (this.select = p)
 		return !p.visible && this.mode
@@ -469,7 +474,6 @@ JPS.LIB.SLIDER = class {
 		)
 
 		JPS.TOOLS.RECT(ctx, this.margin+c*w, this.margin, this.w*this.slider, this.h-this.margin*2, this.color1)
-
 		ctx.restore()
 	}
 }

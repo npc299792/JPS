@@ -20,7 +20,7 @@ JPS.TOOLS = {
 
 	RGB: function(r = 0, g = 0, b = 0, a = 1) {
 		r = ((1<<24) + (r<<16) + (g<<8) + b).toString(16).slice(1)
-		a = ~~(a*255); a = (a<16 && '0' || '') + a.toString(16)
+		a = ~~(a*255); a = (a < 16 && '0' || '') + a.toString(16)
 		return "#" + (r + a).toUpperCase()
 	},
 
