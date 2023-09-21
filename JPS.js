@@ -20,12 +20,12 @@ JPS.TOOLS = {
 
 	RGB: function(r = 0, g = 0, b = 0, a = 1) {
 		r = ((1<<24) + (r<<16) + (g<<8) + b).toString(16).slice(1)
-		a = a <= 0 && '00' || (a*255 < 10 && '0' || '') + (~~(a*255)).toString(16)
+		a = a < 0.07 && '00' || ((a*255 < 10 && '0' || '') + (~~(a*255)).toString(16))
 		return "#" + (r + a).toUpperCase()
 	},
 
 	RNDRGB: function(c) {
-		return JPS.TOOLS.RGB(JPS.TOOLS.RND(c.r||0,0,1), JPS.TOOLS.RND(c.g||0,0,1), JPS.TOOLS.RND(c.b||0,0,1), JPS.TOOLS.RND(c.a||1))
+		return JPS.TOOLS.RGB(JPS.TOOLS.RND(c.r,0,1), JPS.TOOLS.RND(c.g,0,1), JPS.TOOLS.RND(c.b,0,1), JPS.TOOLS.RND(c.a)) // ||0||1
 	},
 
 	TYP: function(m, p) {
