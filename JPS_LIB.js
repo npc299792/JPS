@@ -30,11 +30,12 @@ JPS.TYPES.INFO			= {x:10, y:20, size:15, color:'grey', font:'Arial', method:'fil
 
 // #################################################################################################################################
 
-JPS.TOOLS.RNDASN = function(d, ...a) {
-	var f = []
-	for (o of a) {
-		if (Array.isArray(o)) { var f = o; continue }
-		for (i in o) !f.includes(i) && (d[i] ??= JPS.TOOLS.RND(o[i]))
+JPS.TOOLS.RNDASN = function(target, ...args) {
+	var filter = [], over = 0
+	for (o of args) {
+		if (Array.isArray(o)) { filter = o; continue }
+		if (typeof o != 'object') { over = o; continue }
+		for (i in o) !filter.includes(i) && over && (target[i] = JPS.TOOLS.RND(o[i])) || (target[i] ??= JPS.TOOLS.RND(o[i]))
 	}
 	return d
 }
@@ -166,11 +167,13 @@ JPS.LIB.TEXT = class {
 	constructor(data) {
 		Object.assign(this, JPS.TYPES.TEXT, data)
 	}
-	init(p) {
+	init(p, ctx) {
 		JPS.TOOLS.RNDASN(p, ['type'], this)
+		ctx?.font = p.h + 'px ' + (p.font && p.font || '')
+		p.w = ctx && ctx.measureText(p.text).width || (p.text.length * p.h * .75)
 	}
 	render(p, ctx) {
-		ctx && JPS.TOOLS.PRINT(ctx, p.text, 0, 0, p.h, p.color, p.font, 0,0, p.method) //x:p.h?
+		ctx && JPS.TOOLS.PRINT(ctx, p.text, 0, 0, p.h, p.color, p.font, 0,0, p.method)
 	}
 }
 
@@ -242,7 +245,7 @@ JPS.LIB.WALL = class {
 	constructor(data) {
 		Object.assign(this, JPS.TYPES.WALL, data)
 		this.post = this.color && function(ctx,time,sys) { if (ctx) {
-			JPS.TOOLS.LINE(ctx, this.x + sys.x, this.y + sys.x, this.w, this.h, this.color, this.size * sys.s)
+			JPS.TOOLS.LINE(ctx, this.x*sys.s+sys.x, this.y*sys.s+sys.y, this.w*sys.s, this.h*sys.s, this.color, this.size*sys.s)
 		}}
 	}
 	render(p, ctx, time, sys) {
@@ -345,7 +348,10 @@ JPS.LIB.VISIBLE = class {
 	}
 	render(p, ctx, time, sys) {
 		var w = (p.w&&p.w/2)||p.radius||20, h = (p.h&&p.h/2)||p.radius||20
-		p.visible = JPS.TOOLS.INBOUND(p.x-w/2, p.y-h/2, w, h, -sys.x, -sys.y, (this.w || ctx.canvas.width)/sys.s, (this.h || ctx.canvas.height)/sys.s)
+		p.visible = JPS.TOOLS.INBOUND(
+			p.x-w/2, p.y-h/2, w*2, h*2, 
+			-sys.x/sys.s, -sys.y/sys.s, (this.w || ctx.canvas.width)/sys.s, (this.h || ctx.canvas.height)/sys.s
+		)
 		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, 0, 0, this.w, this.h)
 		p.mouseover && (this.select = p)
 		return !p.visible && this.mode

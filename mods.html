@@ -238,7 +238,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
 		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter.</td></tr>
-		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawns inside this area.</td></tr>
+		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawn inside this area.</td></tr>
 		<tr><td>rate</td><td align="center">1</td><td>Defines how many Particles per second the emitter spawns.</td></tr>
 		<tr><td>spawn</td><td align="center">0</td><td>Defines how many particles spawns next frame. To spawn 50 particles u can simply set this to 50.</td></tr>
 		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particles that will spawned by this emitter. If this is an Array, the emitter randomly picks a value from it.</td></tr>
@@ -308,7 +308,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>charge</td><td align="center">-20</td><td>The charge of the magnet. Opposite charges pulls, same charges pushes each other.</td></tr>
 		<tr><td>pcharge</td><td align="center">[20,10]</td><td>Defines a charge for the particles, this property will be stored as <i>charge</i> in the particle itself.</td></tr>
 		<tr><td>pow</td><td align="center">1</td><td>This integer defines the shape of the magnet field. 1: Linear, 2: Quadratic, 3: Cubic ...</td></tr>
-		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If this is defined, the magnet is connect to the position of this object. It must have <i>x</i> and <i>y</i> properties!</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If this is defined, the magnet is connected to the position of this object. It must have <i>x</i> and <i>y</i> properties!</td></tr>
 	</table>
 </div>
 
@@ -410,7 +410,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 
 
 <div id="drag" style="display: none"><br><h1>JPS.LIB.DRAG(data)</h1><br><br>
-	Adds a common mouse-navigation for the system like in Google Maps. Click and Drag to move screen, use Mousewheel to zoom. Press Space to pause the system. 
+	Adds a common mouse-navigation to the system like in Google Maps. Click and Drag to move screen, use Mousewheel to zoom. Press Space to pause the system. 
 	
 	<br><br>
 
@@ -419,7 +419,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>button</td><td align="center">0</td><td>The Mousebutton to use drag.</td></tr>
 		<tr><td>dragspeed</td><td align="center">1</td><td>The velocity to drag the screen.</td></tr>
 		<tr><td>zoomspeed</td><td align="center">1</td><td>Zoomvelocity for the mousewheel.</td></tr>
-		<tr><td>pause</td><td align="center">'Space'</td><td>The key to toggle pause.</td></tr>
+		<tr><td>pause</td><td align="center">'Space'</td><td>The key to toggle pause. THe "Pause" is done by setting the <i>speed</i> property of the system to 0 and back, this means the system will still be rendered.</td></tr>
 		<tr><td>exclude</td><td align="center"><i>undefined</i></td><td>This can be an object or an Array with objects that contains <i>x</i>, <i>y</i>, <i>w</i> and <i>h</i> properties to define areas on the canvas where the drag option cannot be used.</td></tr>
 	</table>
 
@@ -441,10 +441,10 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>x,y</td><td align="center">5</td><td>The position of the slider.</td></tr>
 		<tr><td>w,h</td><td align="center">250,25</td><td>The width and height of the slider.</td></tr>
 		<tr><td>vertical</td><td align="center"><i>undefined</i></td><td>If this value is true, the slider will be rotated by 90 degrees.</td></tr>
-		<tr><td>target</td><td align="center"><i>undefined</i></td><td>The object that will be controlled. If this is undefined, it automatically selects the system as the target when added.</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>The object that will be controlled. If this is undefined, it automatically selects the system when added to it.</td></tr>
 		<tr><td>prop</td><td align="center">'x'</td><td>The name of the property of the target object that will be changed.</td></tr>
-		<tr><td>start</td><td align="center">0</td><td>Start value of the slider (left).</td></tr>
-		<tr><td>end</td><td align="center">100</td><td>End value of the slider (right).</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Start value of the slider (left/bottom).</td></tr>
+		<tr><td>end</td><td align="center">100</td><td>End value of the slider (right/top).</td></tr>
 		<tr><td>text</td><td align="center">'%%value'</td><td>The caption of the slider. Insert '%%value' to display the current slider value.</td></tr>
 		<tr><td>color1</td><td align="center">'white'</td><td>The foreground color.</td></tr>
 		<tr><td>color2</td><td align="center">'grey'</td><td>Background color.</td></tr>

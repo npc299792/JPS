@@ -219,14 +219,14 @@ function render() {
 	<br><br>
 
 	<table width="100%">
-		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><th width="350">Name</th><th>Description</th></tr>
 		<tr><td>init(particle, ctx, system)</td><td>Will be invoked when the particle is initiated. All particle properties have their default values at that point.</td></tr>
 		<tr><td>render(particle, ctx, time, system)</td><td>Will be invoked when the particle is rendered. <i>time</i> defines the past time since the last rendering as a multiplier. This function can return 2 values, if it's returning 1 the particle will be deleted, if it returns 2 the render process for this particle will be skipped. In both cases <i>system.skip</i> will be incremented.<br><br>
 		<font color="red"><u>Important:</u> </font> When this function is called the canvas is already fully transformed to the particle properties! If u draw something at the coordinates 0,0 it will be drawn at the x and y coordinates of the particle.
 		</td></tr>
 		<tr><td>exit(particle, ctx, system)</td><td>Will be invoked when the particle is being deleted.</td></tr>
-		<tr><td>prev(ctx, system, time)</td><td>Will be invoked before the rendering starts.</td></tr>
-		<tr><td>post(ctx, system, time)</td><td>Will be invoked after the rendering is done.</td></tr>
+		<tr><td>prev(ctx, time, system)</td><td>Will be invoked before the rendering starts.</td></tr>
+		<tr><td>post(ctx, time, system)</td><td>Will be invoked after the rendering is done.</td></tr>
 	</table>
 
 	<br><br>
@@ -338,16 +338,17 @@ JPS.TOOLS.RND(5,5)			<font color="#AAAAAA">// returns a value between 0 and 10</
 JPS.TOOLS.RND(20,10,1)		<font color="#AAAAAA">// returns a integer between 10 and 30</font>
 
 <font color="#AAAAAA">// u can also pass an array</font>
-JPS.TOOLS.RND([50,5])		// returns a value between 45 and 55
-JPS.TOOLS.RND([100,50,1])	// returns a integer between 50 and 150
-
-<font color="#AAAAAA">// pass an object to create a random color</font>
-JPS.TOOLS.RND({r:[100,100], a:[0.6,0.3]})
-JPS.TOOLS.RND({r:255, g:[128,128], b:[128,128], a:1})
+JPS.TOOLS.RND([50,5])		<font color="#AAAAAA">// returns a value between 45 and 55</font>
+JPS.TOOLS.RND([100,50,1])	<font color="#AAAAAA">// returns a integer between 50 and 150</font>
 
 <font color="#AAAAAA">// if u pass an array that first entry is <u>not</u> a <i>Number</i>, it will choose a random entry of it</font>
-JPS.TOOLS.RND(['red','green','blue'])	<font color="#AAAAAA">// returns red, green or blue</font>
+JPS.TOOLS.RND(['red', 'green', 'blue'])	<font color="#AAAAAA">// returns red, green or blue</font>
+JPS.TOOLS.RND([[5], 10, 20, 40])		<font color="#AAAAAA">// returns 5, 10, 20 or 40</font>
 JPS.TOOLS.RND([[15,5],[45,5]])			<font color="#AAAAAA">// returns a value between 10-20 or 40-50</font>
+
+<font color="#AAAAAA">// pass an object to create a random color, default is r:0, g:0, b:0, a:1</font>
+JPS.TOOLS.RND({r:[100,100], a:[0.6,0.3]})
+JPS.TOOLS.RND({r:255, g:[128,128], b:[128,128], a:1})
 	</code></pre>
 
 </div>
