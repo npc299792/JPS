@@ -37,7 +37,7 @@ JPS.TOOLS.RNDASN = function(target, ...args) {
 		if (typeof o != 'object') { over = o; continue }
 		for (i in o) !filter.includes(i) && over && (target[i] = JPS.TOOLS.RND(o[i])) || (target[i] ??= JPS.TOOLS.RND(o[i]))
 	}
-	return d
+	return target
 }
 
 JPS.TOOLS.LINE = (ctx, x, y, w, h, stroke, size) => {
@@ -169,7 +169,7 @@ JPS.LIB.TEXT = class {
 	}
 	init(p, ctx) {
 		JPS.TOOLS.RNDASN(p, ['type'], this)
-		ctx?.font = p.h + 'px ' + (p.font && p.font || '')
+		ctx && (ctx.font = p.h + 'px ' + (p.font && p.font || ''))
 		p.w = ctx && ctx.measureText(p.text).width || (p.text.length * p.h * .75)
 	}
 	render(p, ctx) {
@@ -351,6 +351,7 @@ JPS.LIB.VISIBLE = class {
 		p.visible = JPS.TOOLS.INBOUND(
 			p.x-w/2, p.y-h/2, w*2, h*2, 
 			-sys.x/sys.s, -sys.y/sys.s, (this.w || ctx.canvas.width)/sys.s, (this.h || ctx.canvas.height)/sys.s
+			// this.x*sys.s+sys.x, this.y*sys.s+sys.y, this.w*sys.s, this.h*sys.s
 		)
 		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, 0, 0, this.w, this.h)
 		p.mouseover && (this.select = p)
@@ -481,5 +482,40 @@ JPS.LIB.SLIDER = class {
 
 		JPS.TOOLS.RECT(ctx, this.margin+c*w, this.margin, this.w*this.slider, this.h-this.margin*2, this.color1)
 		ctx.restore()
+	}
+}
+
+
+// #################################################################################################################################
+
+JPS.TYPES.GRID			= {cx: 100, cy: 100, cw: 100, ch: 100}
+
+JPS.LIB.GRID = class {
+	grid = []
+	constructor(data) {
+		Object.assign(this, JPS.TYPES.GRID, data)
+		this.add = sys => sys.grid ??= this
+		this.prev = () => this.temp = []
+		this.post = () => this.grid = this.temp
+	}
+	render(p) {
+		var x = ~~Math.abs(p.x / this.cw % this.cx)
+		var y = ~~Math.abs(p.y / this.ch % this.cy)
+		var pos = x * this.cx + y
+		this.temp[pos] && this.temp[pos].push(p) || (this.temp[pos] = [p])
+	}
+
+	test(p, radius, callback) {
+		var x = ~~Math.abs(p.x / this.cw % this.cx)
+		var y = ~~Math.abs(p.y / this.ch % this.cy)
+		var rx = Math.ceil(radius / this.cw) 
+		var ry = Math.ceil(radius / this.ch)
+
+		for (var i = x-rx; i <= x+rx; i++) {
+			for (var j = y-ry; j <= y+ry; j++) {
+				var a = this.grid[(i%this.cx) * this.cx + (j%this.cy)]
+				if (a) a.forEach(q => p != q && callback(p,q))
+			}
+		}
 	}
 }
