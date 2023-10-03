@@ -238,7 +238,7 @@ function render() {
 	<table width="100%">
 		<tr><th width="200">Name</th><th>Description</th></tr>
 		<tr><td>add(system)</td><td>Will be invoked when the modifier is added to a system.</td></tr>
-		<tr><td>remove(system)</td><td>Will be invoked when the modifier is removed to a system.</td></tr>
+		<tr><td>remove(system)</td><td>Will be invoked when the modifier is removed from a system.</td></tr>
 	</table>
 
 
@@ -277,7 +277,7 @@ function render() {
 	<br><br><hr><br>
 
 	<h1>Types</h1><br>
-	Every Modifier can have a <i>type</i> property to define the type of particle to interact with, this can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. U also can define a array with a list of types to group them. A modifier with the type undefined / null / false / 0 will interact with all particles.
+	Every Modifier can have a <i>type</i> property to define the type of particle to interact with, this can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. U also can define a array with a list of types to group them. A modifier with the type <i>undefined</i> / <i>null</i> / <i>false</i> / 0 will interact with all particles.
 
 	<br><br><hr><br>
 
@@ -288,7 +288,7 @@ function render() {
 
 	<pre><code>
 myMod = {
-	init: function(p)
+	init: function(p) {
 		p.vx = Math.random() * 100						<font color="#AAAAAA">// set a random velocity</font>
 		p.y = Math.random() * can.height				<font color="#AAAAAA">// set a random height</font>
 	},
@@ -325,7 +325,7 @@ system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
 
 
 <div id="random" style="display: none"><br><h1>Randomization</h1><br>
-	A important part of every Particlesystem is the randomization, without it all particles would exactly do the same. To support it the JPS Object contains a helpful function:
+	A important part of every Particlesystem is the randomization, without it all particles would look and do the same. To support it the JPS Object contains a helpful function:
 
 	<br><br>
 

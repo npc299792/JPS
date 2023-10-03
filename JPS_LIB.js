@@ -344,16 +344,12 @@ JPS.LIB.VISIBLE = class {
 	prev(ctx, time, sys) {
 		this.select = null
 		this.x = (this.mx-sys.x) / sys.s; this.y = (this.my-sys.y) / sys.s
-		if (ctx) { this.w = ctx.canvas.width; this.h = ctx.canvas.height }
+		if (ctx) { this.w = ctx.canvas.width/sys.s; this.h = ctx.canvas.height/sys.s }
 	}
 	render(p, ctx, time, sys) {
 		var w = (p.w&&p.w/2)||p.radius||20, h = (p.h&&p.h/2)||p.radius||20
-		p.visible = JPS.TOOLS.INBOUND(
-			p.x-w/2, p.y-h/2, w*2, h*2, 
-			-sys.x/sys.s, -sys.y/sys.s, (this.w || ctx.canvas.width)/sys.s, (this.h || ctx.canvas.height)/sys.s
-			// this.x*sys.s+sys.x, this.y*sys.s+sys.y, this.w*sys.s, this.h*sys.s
-		)
-		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, 0, 0, this.w, this.h)
+		p.visible = JPS.TOOLS.INBOUND(p.x-w, p.y-h, w*2, h*2, -sys.x/sys.s, -sys.y/sys.s, this.w, this.h)
+		p.mouseover = JPS.TOOLS.INRECT(this.x, this.y, p.x-w, p.y-h, w*2, h*2)
 		p.mouseover && (this.select = p)
 		return !p.visible && this.mode
 	}
