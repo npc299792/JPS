@@ -98,8 +98,10 @@
 		<li><a href="#" onclick="selectPage('circle')">Circle</a></li>
 		<li><a href="#" onclick="selectPage('sphere')">Sphere</a></li>
 		<li><a href="#" onclick="selectPage('triangle')">Triangle</a></li>
+		<li><a href="#" onclick="selectPage('polygon')">Polygon</a></li>
 		<li><a href="#" onclick="selectPage('image')">Image</a></li>
 		<li><a href="#" onclick="selectPage('text')">Text</a></li>
+		<li><a href="#" onclick="selectPage('colors')">Colors</a></li>
 	</ul>
 </li>
 <li>
@@ -107,10 +109,12 @@
 	<ul class="dropdown">
 		<li><a href="#" onclick="selectPage('emitter')">&nbsp;&nbsp;Emitter&nbsp;&nbsp;</a></li>
 		<li><a href="#" onclick="selectPage('animate')">Animate</a></li>
-		<li><a href="#" onclick="selectPage('wall')">Wall</a></li>
 		<li><a href="#" onclick="selectPage('align')">Align</a></li>
 		<li><a href="#" onclick="selectPage('magnet')">Magnet</a></li>
-		<li><a href="#" onclick="selectPage('tween')">#Tween</a></li>
+		<li><a href="#" onclick="selectPage('tween')">Tween</a></li>
+		<li><a href="#" onclick="selectPage('box')">Box</a></li>
+		<li><a href="#" onclick="selectPage('wall')">Wall</a></li>
+		<li><a href="#" onclick="selectPage('collision')">Collision</a></li>
 	</ul>
 </li>
 <li>
@@ -118,7 +122,8 @@
 	<ul class="dropdown">
 		<li><a href="#" onclick="selectPage('camera')">Camera</a></li>
 		<li><a href="#" onclick="selectPage('visible')">Visible</a></li>
-		<li><a href="#" onclick="selectPage('backscreen')">#Backscreen</a></li>
+		<li><a href="#" onclick="selectPage('connect')">Connect</a></li>
+		<li><a href="#" onclick="selectPage('backscreen')">Backscreen</a></li>
 	</ul>
 </li>
 <li>
@@ -126,9 +131,13 @@
 	<ul class="dropdown">
 		<li><a href="#" onclick="selectPage('info')">Info</a></li>
 		<li><a href="#" onclick="selectPage('drag')">Drag</a></li>
+		<li><a href="#" onclick="selectPage('grid')">Grid</a></li>
 		<li><a href="#" onclick="selectPage('slider')">&nbsp;&nbsp;&nbsp;Slider&nbsp;&nbsp;&nbsp;</a></li>
+		<li><a href="#" onclick="selectPage('controller')">Controller</a></li>
+		<li><a href="#" onclick="selectPage('rendertime')">Rendertime</a></li>
 	</ul>
 </li>
+<li><a href="#" onclick="selectPage('tools')">Tools</a></li>
 </ul>
 
 <hr>
@@ -150,76 +159,111 @@ All modifiers take an optional arguments object to change their behavior, otherw
 
 
 <div id="rectangle" style="display: none"><br><h1>JPS.LIB.RECTANGLE(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>w</td><td align="center">[10,10]</td><td>This width of the Rectangle.</td></tr>
-		<tr><td>h</td><td align="center">[10,10]</td><td>This height of the Rectangle.</td></tr>
-		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Rectangle.</td></tr>
+		<tr><td>w</td><td align="center">[20,10,1]</td><td>This width of the Rectangle.</td></tr>
+		<tr><td>h</td><td align="center">[20,10,1]</td><td>This height of the Rectangle.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Rectangle. Set to 0/<i>undefined</i> for no filling.</td></tr>
 		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
-		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
 	</table>
+
+	<br><br><h1>Note</h1><br>
+
+	With all Draw Modifiers u can set randomized particle properties through the Constructor. This will overwrite default settings and previously set values by other modifiers! The <i>type</i> property is not copied.
+
+	<br><br>
+
+	<code>
+		<font color="#AAAAAA">// a default rectangle inside a 1000x1000 area that despawns within 10 seconds</font><br>
+		new JPS.LIB.RECTANGLE({x:[500,500], y:[500,500], life:[5000,5000]})
+	</code>
 </div>
 
 
 <div id="circle" style="display: none"><br><h1>JPS.LIB.CIRCLE(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Circle.</td></tr>
-		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Circle.</td></tr>
-		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
-		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+		<tr><td>radius</td><td align="center">[10,5,1]</td><td>The radius of the Circle.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Circle. Set to 0/<i>undefined</i> for no filling.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. </td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness of the outline.</td></tr>
 		<tr><td>start</td><td align="center">0</td><td>Startangle of the circle.</td></tr>
-		<tr><td>end</td><td align="center">360</td><td>Endangle of the circle.</td></tr>
+		<tr><td>end</td><td align="center">Math.PI*2</td><td>Endangle of the circle.</td></tr>
 	</table>
 </div>
 
 
 <div id="sphere" style="display: none"><br><h1>JPS.LIB.SPHERE(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>radius</td><td align="center">[10,10]</td><td>The radius of the Sphere.</td></tr>
-		<tr><td>gradient</td><td align="center"><i>JPS.TYPES.GRADIENT</i></td><td>Defines the gradient colorsteps of the Sphere. This is an Array containing Objects which in turn contains the following properties:<br>i: Index-value, r: Red-value, g: Green-value, b: Blue-value</td></tr>
-		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline rectangle will be drawn.</td></tr>
-		<tr><td>line</td><td align="center"><i>undefined</i></td><td>If <i>stroke</i> is defined, this value sets the thickness of the outline.</td></tr>
+		<tr><td>radius</td><td align="center">[10,5,1]</td><td>The radius of the Sphere. Changing this afterwards will have no effect on the drawing, u need to scale the particle if u want to change the size during the runtime.</td></tr>
+		<tr><td>gradient</td><td align="center"><i>JPS.TYPES.GRADIENT</i></td><td>Defines the gradient colorsteps of the Sphere. This is an Array containing Objects which in turn contains the following properties:<br>i: Index-value, r: Red-value, g: Green-value, b: Blue-value, a: Alpha-value</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness of the outline.</td></tr>
 		<tr><td>start</td><td align="center">0</td><td>Startangle of the circle.</td></tr>
-		<tr><td>end</td><td align="center">360</td><td>Endangle of the circle.</td></tr>
+		<tr><td>end</td><td align="center">Math.PI*2</td><td>Endangle of the circle.</td></tr>
 	</table>
 </div>
 
 
 <div id="triangle" style="display: none"><br><h1>JPS.LIB.TRIANGLE(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>w</td><td align="center">[10,10]</td><td>This width of the Triangle.</td></tr>
-		<tr><td>h</td><td align="center">[10,10]</td><td>This height of the Triangle.</td></tr>
+		<tr><td>w</td><td align="center">[20,10,1]</td><td>This width of the Triangle.</td></tr>
+		<tr><td>h</td><td align="center">[20,10,1]</td><td>This height of the Triangle.</td></tr>
 		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Triangle.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness of the outline.</td></tr>
+	</table>
+</div>
+
+
+<div id="polygon" style="display: none"><br><h1>JPS.LIB.POLYGON(data)</h1><br><br>
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>w,h</td><td align="center">[30,10,1]</td><td>The width and height of the polygon.</td></tr>
+		<tr><td>edges</td><td align="center">8</td><td>Defines the how many edges the polygon will have.</td></tr>
+		<tr><td>rnd</td><td align="center">0.3</td><td>Randomization of the polygon. With 0 its fully symetric.</td></tr>
+		<tr><td>points</td><td align="center"><i>undefined</i></td><td>Can be a Array of objects with x,y properties to define the polygon points manually. If this is set, no random points will be generated and the <i>edges</i> and <i>rnd</i> arguments has no effect. Points should be 1 based (-1 = top/left, 1 = bottom/right) so they can correctly scaled with the w & h properties.</td></tr>
+		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the polygon filling.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline. If this is <i>undefined</i>, 0, <i>null</i> or <i>false</i>, no outline will be drawn.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness of the outline.</td></tr>
 	</table>
 </div>
 
 
 <div id="image" style="display: none"><br><h1>JPS.LIB.IMAGE(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
 		<tr><td>src</td><td align="center"><i>undefined</i></td><td>The Sourcepath of the image.</td></tr>
-		<tr><td>image</td><td align="center"><i>undefined</i></td><td>The image object.</td></tr>
+		<tr><td>w, h</td><td align="center"><i>undefined</i></td><td>The width and height of the image. This will be set automatically when the image is loaded and will also be written in every particle initiated with this modifier. If u need the <i>w</i> & <i>h</i> properties before the image is loaded, u can define them in the data object.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when the image is loaded.</td></tr>
 	</table>
 </div>
 
 
 <div id="text" style="display: none"><br><h1>JPS.LIB.TEXT(data)</h1><br>
-
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>size</td><td align="center">[20,10]</td><td>The height of the Text.</td></tr>
+		<tr><td>h</td><td align="center">[20,10,1]</td><td>The height of the Text.</td></tr>
 		<tr><td>color</td><td align="center"><i>JPS.TYPES.COLOR</i></td><td>The color of the Text.</td></tr>
+		<tr><td>stroke</td><td align="center"><i>undefined</i></td><td>The color of the outline.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness of the outline.</td></tr>
 		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the Text.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to draw the Text.</td></tr>
 		<tr><td>text</td><td align="center">['A','B','C']</td><td>The Text that will assigned to the Particles. If this is an Array, the modifier randomly picks a value from it.</td></tr>
+	</table>
+</div>
+
+
+<div id="colors" style="display: none"><br><h1>JPS.LIB.COLORS(data)</h1><br>
+	Seperates the color and alpha channels and stores them inside the particle so they can manipulated seperatly.<br><br>
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>red</td><td align="center">[100,100]</td><td>Red component.</td></tr>
+		<tr><td>green</td><td align="center">[100,100]</td><td>Green component.</td></tr>
+		<tr><td>blue</td><td align="center">[100,100]</td><td>Blue component.</td></tr>
+		<tr><td>alpha</td><td align="center">1</td><td>Alpha component.</td></tr>
 	</table>
 </div>
 
@@ -237,21 +281,15 @@ All modifiers take an optional arguments object to change their behavior, otherw
 
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter.</td></tr>
-		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawn inside this area.</td></tr>
+		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter. <i>z</i> is optional and not set by default, particles only have a <i>z</i> property if <i>z</i> is defined in the Emitter.</td></tr>
+		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawn inside this area. <i>d</i> is optional.</td></tr>
 		<tr><td>rate</td><td align="center">1</td><td>Defines how many Particles per second the emitter spawns.</td></tr>
 		<tr><td>spawn</td><td align="center">0</td><td>Defines how many particles spawns next frame. To spawn 50 particles u can simply set this to 50.</td></tr>
+		<tr><td>rnd</td><td align="center"><i>undefined</i></td><td>An optional object with properties that will be randomized and copied into particles created by this emitter. Will overwrite existing properties.</td></tr>
 		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particles that will spawned by this emitter. If this is an Array, the emitter randomly picks a value from it.</td></tr>
 		<tr><td>life</td><td align="center"><i>undefined</i></td><td>Defines a lifetime for particles spawned by this emitter. Can be randomized like [8000,2000] to set a lifetime between 6 and 10 seconds.</td></tr>
 	</table>
 </div>
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
 
 
 <div id="animate" style="display: none"><br><h1>JPS.LIB.ANIMATE(data)</h1><br>
@@ -261,17 +299,10 @@ All modifiers take an optional arguments object to change their behavior, otherw
 
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="300" align="center">Default</th><th>Description</th></tr>
-		<tr><td>id</td><td align="center">'v'</td><td>This string defines the label of this modifier. The animation value will be saved as <i>id + propertyname</i> in the particle.</td></tr>
-		<tr><td>data</td><td align="center"><i>{x:[0,100], y:[0,100]}</i></td><td>An object that contains the animation values per second. To randomize the values u can define an Array, x:[0,100] will generate a random value between -100 and 100.</td></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>This string defines the label of this modifier. The animation value will be saved as <i>id + propertyname</i> in the particle. Avoid 's' and 'r' as id name when animating x or y.</td></tr>
+		<tr><td>...args</td><td align="center"><i>x:[0,100], y:[0,100]</i></td><td>The animation values per second. To randomize the values u can define an Array, x:[0,100] will generate a random x-velocity between -100 and 100.</td></tr>
 	</table>
 </div>
-
-
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
 
 
 <div id="align" style="display: none"><br><h1>JPS.LIB.ALIGN(data)</h1><br>
@@ -288,13 +319,6 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
 <div id="magnet" style="display: none"><br><h1>JPS.LIB.MAGNET(data)</h1><br>
 	Pulls or pushes particles in its radius.
 
@@ -307,9 +331,85 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>radius</td><td align="center">300</td><td>The radius of the magnet.</td></tr>
 		<tr><td>charge</td><td align="center">-20</td><td>The charge of the magnet. Opposite charges pulls, same charges pushes each other.</td></tr>
 		<tr><td>pcharge</td><td align="center">[20,10]</td><td>Defines a charge for the particles, this property will be stored as <i>charge</i> in the particle itself.</td></tr>
-		<tr><td>pow</td><td align="center">1</td><td>This integer defines the shape of the magnet field. 1: Linear, 2: Quadratic, 3: Cubic ...</td></tr>
+		<tr><td>pow</td><td align="center">1</td><td>This exponent defines the shape of the magnet field. 1: Linear, 2: Quadratic, 3: Cubic ...</td></tr>
 		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If this is defined, the magnet is connected to the position of this object. It must have <i>x</i> and <i>y</i> properties!</td></tr>
 	</table>
+</div>
+
+
+<div id="tween" style="display: none"><br><h1>JPS.LIB.TWEEN(data)</h1><br><br>
+	Performs a time based animation. All values can be randomized. 
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>prop</td><td align="center"><i>'s'</i></td><td>The particle property that will be animated.</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Startvalue of the animation. If this is <i>undefined</i>, it takes the current value.</td></tr>
+		<tr><td>end</td><td align="center">2</td><td>Endvalue of the animation.</td></tr>
+		<tr><td>starttime</td><td align="center">0</td><td>The starttime (in ms) of the animation. If this value is negative, it will be deducted from the particle lifetime (-100 = particle lifetime - 100ms).</td></tr>
+		<tr><td>endtime</td><td align="center">[5000,2000]</td><td>The endtime of the animation, also can be negative.</td></tr>
+		<tr><td>left</td><td align="center"><i>undefined</i></td><td>Defines the behavior of the tween before it starts. 0: Wait, 1: Loop, 2: Oscillate</td></tr>
+		<tr><td>right</td><td align="center"><i>undefined</i></td><td>Defines the behavior of the tween after it ends. To create a endless animation, set this value to 1 or 2.</td></tr>
+		<tr><td>ease</td><td align="center"><i>'linear'</i></td><td>The easing method that will be used. Can be <i>'linear'</i>, <i>'easein'</i> or <i>'easeout'</i></i></td></tr>
+		<tr><td>pow</td><td align="center">2</td><td>Defines the exponent for the easing: 1: Linear, 2: Quadratic, 3: Cubic ...</td></tr>
+	</table>
+</div>
+
+
+<div id="wall" style="display: none"><br><h1>JPS.LIB.WALL(data)</h1><br>
+	Creates a wall in the system to block particles. The collision detection isnt accurate but should work for the most situations.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>The animation label, be sure its the same as in your Animate modifier, otherwise collisions have no effect.</td></tr>
+		<tr><td>x,y</td><td align="center">0</td><td>The position of the wall.</td></tr>
+		<tr><td>w,h</td><td align="center">100</td><td>The <u>w</u>idth and <u>h</u>eight of the wall.</td></tr>
+		<tr><td>bounce</td><td align="center"><i>0.6</i></td><td>Defines the new velocity of the particle after a collision (1 = 100%). Can be randomized, like [1, 0.5].</td></tr>
+		<tr><td>color</td><td align="center"><i><i>undefined</i></i></td><td>Linecolor, if this is <i>undefined</i> or 0, nothing will draw.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Defines the size of the Wall for the collision detection and drawing if <i>color</i> is set.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>A callback function that will be called when a particle hits the wall, delievers the arguments:<br><br><b><i>callback(particle, system, modifier)</i></b><br><br>This callback can return 1 (delete particle) or 2 (skip render process for this particle).</td></tr>
+	</table>
+</div>
+
+
+<div id="box" style="display: none"><br><h1>JPS.LIB.BOX(data)</h1><br><br>
+	Keeps particles in or outside an area depending where they created and let them bounce or portal thru the other side when they hit a wall.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>x,y</td><td align="center">0,0</td><td>The left corner of the box.</td></tr>
+		<tr><td>w,h</td><td align="center">1000,1000</td><td>The width and height of the box.</td></tr>
+		<tr><td>bounce</td><td align="center">1</td><td>New velocity after a collision (1 = 100%).</td></tr>
+		<tr><td>portal</td><td align="center"><i>undefined</i></td><td>If this is true, the particles will portal to the opposite side.</td></tr>
+		<tr><td>color</td><td align="center"><i>undefined</i></td><td>If this is defined, the modifier will draw a rectangle at its position with this color.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>If <i>color</i> is set, this will set the line thickness.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when a particle hits a wall. The function will be called with the follow arguments...<br><br><b><i>callback(particle, side, system, modifier)</i></b><br><br><i>side</i> defines the side of collision, 1: Left, 2: Right, 3: Top, 4: Bottom<br>This callback can return 1 (delete particle) or 2 (skip render process for this particle).</td></tr>
+	</table>
+</div>
+
+
+<div id="collision" style="display: none"><br><h1>JPS.LIB.COLLISION(data)</h1><br><br>
+	Does circular collisiontests with the particles. It also works with particles who has w & h properties, the collision isn't accurate in that case but can be adjusted by adding a <i>radius</i> property to these particles. This modifier uses the Grid modifier, if the system doesn't already has a Grid modifier and its not delivered via the arguments, it will create one with the default settings and add it to the system.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>id</td><td align="center">'v'</td><td>The animation layer id to apply the new velocities.</td></tr>
+		<tr><td>extend</td><td align="center">50</td><td>The search radius of every particle will be extended by this value. Should be bigger as the biggest radius of all particles.</td></tr>
+		<tr><td>bounce</td><td align="center">1</td><td>New velocity after a collision (1 = 100%).</td></tr>
+		<tr><td>grid</td><td align="center"><i>undefined</i></td><td>Set this value to a Grid modifier if u want to use another grid.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when 2 particles collide. The callback function is called with the following arguments...<br><br><b><i>callback(particle1, particle2, distance)</i></b><br><br>If the callback returns <i>true</i>, the collision handling will be skipped for this event.</td></tr>
+		<tr><td>double</td><td align="center"><i>undefined</i></td><td>If this is true, the callback will be called twice with a swapped order of the colliding particles.</td></tr>
+	</table>
+
+	<br><br>
+	This modifier also contains a <i>tests</i> property that counts how many tests the modifier did in the last rendering, available after the render process.
 </div>
 
 
@@ -317,7 +417,6 @@ All modifiers take an optional arguments object to change their behavior, otherw
 <!-- ########################################################################################################################## -->
 <!-- ########################################################################################################################## -->
 <!-- ########################################################################################################################## -->
-
 
 
 <div id="camera" style="display: none"><br><h1>JPS.LIB.CAMERA(data)</h1><br>
@@ -336,36 +435,68 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="wall" style="display: none"><br><h1>JPS.LIB.WALL(data)</h1><br>
-	Creates a wall in the system to block particles. The collision detection isnt accurate but should work for the most situations.
-
+<div id="visible" style="display: none"><br><h1>JPS.LIB.VISIBLE(data)</h1><br><br>
+	Does a visibility and mouseover check and stores it as <i>visible</i> and <i>mouseover</i> properties inside the particle. If u have a lot of particles that moves out of the screen, this modifier can save u a lot of rendertime.
+	
 	<br><br>
 
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>id</td><td align="center">'v'</td><td>The animation label, be sure its the same as in your Animate modifier, otherwise collisions have no effect.</td></tr>
-		<tr><td>x,y</td><td align="center">0</td><td>The position of the wall.</td></tr>
-		<tr><td>w,h</td><td align="center">100</td><td>The <u>w</u>idth and <u>h</u>eight of the wall.</td></tr>
-		<tr><td>bounce</td><td align="center"><i>0.6</i></td><td>Defines the new velocity of the particle after a collision (1 = 100%). Can be randomized, like [1, 0.5].</td></tr>
-		<tr><td>size</td><td align="center"><i>undefined</i></td><td>Defines the size of the line. If this is <i>undefined</i> or 0, nothing will draw. Can't changed during runtime!</td></tr>
-		<tr><td>color</td><td align="center"><i>'red'</i></td><td>If <i>size</i> is defined, this will set the color of the line.</td></tr>
-		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>A callback function that will be called when a particle hits the wall, it delievers the arguments: (particle, system, wall).</td></tr>
+		<tr><td>mode</td><td align="center">2</td><td>This value is returned by the render function when a particle fails the visibility test. 0: Nothing, 1: Delete particle, 2: Skip render process for this particle.</td></tr>
+		<tr><td>min</td><td align="center">1</td><td>The minimal visible area of a particle. If <i>width * height * scale</i> is lower as this value, it fails the visibility test. Can also have decimals.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called in the post process when the mousecurser focus changed, like the mouse moves over a particle. The function will be called with the following arguments:<br><br><b><i>callback(current, previous, system, modifier)</i></b></td></tr>
+	</table>
+	
+	<br><br>
+	
+	Besides that, this modifier has some properties...
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>select</td><td>The current selected particle under the mouse, available after the render process. During the render process this value contains the particle from the previous rendering. If nothing is selected, this value is <i>undefined</i>.</td></tr>
+		<tr><td>x,y</td><td>Contains the current <u><b>transformed</b></u> mouseposition in the system. This allows u to use this modifier as a <i>target</i> for some other modifiers, like Magnet or Align.</td></tr>
+		<tr><td>mx,my</td><td>Contains the current mouseposition on the canvas.</td></tr>
 	</table>
 </div>
 
 
+<div id="connect" style="display: none"><br><h1>JPS.LIB.CONNECT(data)</h1><br><br>
+	Draws lines between nearby particles. This modifier uses the Grid modifier, if the system doesn't already has a Grid modifier it will create one with the default settings and add it to the system.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="250" align="center">Default</th><th>Description</th></tr>
+		<tr><td>radius</td><td align="center">200</td><td>The radius between particles.</td></tr>
+		<tr><td>color1</td><td align="center"><i>{r:50, g:50, b:250, a:0}</i></td><td>Color of the line at max distance. If u want to change this during the runtime, u also need to call the <i>update()</i> method of this modifier.</td></tr>
+		<tr><td>color2</td><td align="center"><i>{r:250, g:250, b:250, a:1}</i></td><td>Color of the line at min distance. Also needs a <i>update()</i> call when changed during runtime.</td></tr>
+		<tr><td>line</td><td align="center">1</td><td>Line thickness.</td></tr>
+		<tr><td>pow</td><td align="center">2</td><td>The exponent to define how fast the colors fade.</td></tr>
+	</table>
+</div>
+
+
+<div id="backscreen" style="display: none"><br><h1>JPS.LIB.BACKSCREEN(data)</h1><br><br>
+	Creates a copy of the rendering and copies it in the background of the next rendering. 
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>w</td><td align="center"><i>window.innerWidth</i></td><td>Width of the copy.</td></tr>
+		<tr><td>h</td><td align="center"><i>window.innerHeight</i></td><td>Height of the copy.</td></tr>
+		<tr><td>filter</td><td align="center"><i>'opacity(30%) blur(4px)'</i></td><td>Filter for the copy.</td></tr>
+		<tr><td>replace</td><td align="center"><i>undefined</i></td><td>If true, this replaces the rendering with the copy.</td></tr>
+		<tr><td>noback</td><td align="center"><i>undefined</i></td><td>If true, the copy isn't copied into the background.</td></tr>
+	</table>
+</div>
+
 
 <!-- ########################################################################################################################## -->
 <!-- ########################################################################################################################## -->
 <!-- ########################################################################################################################## -->
-
 
 
 <div id="info" style="display: none"><br><h1>JPS.LIB.INFO(data)</h1><br><br>
@@ -375,19 +506,20 @@ All modifiers take an optional arguments object to change their behavior, otherw
 
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>text1</td><td align="center">'fps: %%fps  /  particles: %%p'</td><td>This text will be printed on the canvas and supports the special signs listed below. Set to <i>undefined</i> to deactivate.</td></tr>
+		<tr><td>text</td><td align="center">'Particles: %%p  -  Rendertime: %%rt'</td><td>This text will be printed on the canvas and supports the special signs listed below. Set to <i>undefined</i> to deactivate.</td></tr>
 		<tr><td>text2</td><td align="center">undefined</td><td>This text will be printed besides every particle. To print out a property, insert %%propertyname in the text. This method isn't optimized and should only used for debugging!</td></tr>
-		<tr><td>x,y</td><td align="center">20</td><td>The position of the text. For <i>text2</i> this is the relative position to the particle.</td></tr>
-		<tr><td>size</td><td align="center">15</td><td>The height of the text. Set to <i>undefined</i> to use the canvas fontsize.</td></tr>
-		<tr><td>color</td><td align="center"><i>'grey'</i></td><td>The color of the text. Set to <i>undefined</i> to use the canvas color.</td></tr>
+		<tr><td>x,y</td><td align="center">10</td><td>The position of the text. For <i>text2</i> this is the relative position to the particle.</td></tr>
+		<tr><td>h</td><td align="center">15</td><td>The height of the text. Set to <i>undefined</i> to use the canvas fontsize.</td></tr>
+		<tr><td>color</td><td align="center"><i>'white'</i></td><td>The color of the text. Set to <i>undefined</i> to use the canvas color.</td></tr>
 		<tr><td>font</td><td align="center"><i>'Arial'</i></td><td>The fonttype of the text. Set to <i>undefined</i> to use the canvas fonttype.</td></tr>
-		<tr><td>method</td><td align="center"><i>'fillText'</i></td><td>Defines the method to print the text.</td></tr>
+		<tr><td>align</td><td align="center"><i>'left'</i></td><td>The align of the text, like <i>'left'</i>, <i>'center'</i> or <i>'right'</i>.</td></tr><tr>
+		<td>base</td><td align="center"><i>'top'</i></td><td>The baseline of the text: <i>'top'</i>, <i>'middle'</i> or <i>'bottom'</i>.</td></tr>
 		<tr><td>digits</td><td align="center">2</td><td>The amount of decimal places.</td></tr>
 	</table>
 	
 	<br><br>
 
-	Special signs for <i>text1</i>
+	Special signs for <i>text</i>...
 
 	<br><br>
 
@@ -395,7 +527,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><th width="200">Name</th><th>Description</th></tr>
 		<tr><td>%%p</td><td>The amount of particles in the system.</td></tr>
 		<tr><td>%%fps</td><td>The current frames per second.</td></tr>
-		<tr><td>%%rt</td><td>The rendertime in milliseconds. This does <u>not</u> includes the prev and post modifiers.</td></tr>
+		<tr><td>%%rt</td><td>The rendertime in milliseconds.</td></tr>
 		<tr><td>%%ft</td><td>The frametime in milliseconds.</td></tr>
 		<tr><td>%%time</td><td>The time the system is running.</td></tr>
 		<tr><td>%%speed</td><td>The current speed the system.</td></tr>
@@ -404,9 +536,30 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
+<div id="slider" style="display: none"><br><h1>JPS.LIB.SLIDER(data)</h1><br><br>
+	Adds a scroller to control a property of a given object.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>x,y</td><td align="center">5</td><td>The position of the slider.</td></tr>
+		<tr><td>w,h</td><td align="center">250,25</td><td>The width and height of the slider.</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>The object that will be controlled. If this is undefined, it automatically selects the system when added to it.</td></tr>
+		<tr><td>vertical</td><td align="center"><i>undefined</i></td><td>If this value is true, the slider will be rotated by 90 degrees.</td></tr>
+		<tr><td>prop</td><td align="center">'x'</td><td>The name of the property of the target object that will be changed.</td></tr>
+		<tr><td>start</td><td align="center">0</td><td>Start value of the slider (left/bottom).</td></tr>
+		<tr><td>end</td><td align="center">100</td><td>End value of the slider (right/top).</td></tr>
+		<tr><td>text</td><td align="center">'%%value'</td><td>The caption of the slider. Insert '%%value' to display the current slider value.</td></tr>
+		<tr><td>color1</td><td align="center">'white'</td><td>The foreground color.</td></tr>
+		<tr><td>color2</td><td align="center">'grey'</td><td>Background color.</td></tr>
+		<tr><td>line</td><td align="center">2</td><td>Line thickness.</td></tr>
+		<tr><td>margin</td><td align="center">5</td><td>Margin between slider and frame.</td></tr>
+		<tr><td>slider</td><td align="center">.1</td><td>The width of the slider inside the frame (1 = 100%).</td></tr>
+		<tr><td>digits</td><td align="center">2</td><td>The amount of decimals used to display '%%value' in the <i>text</i>.</td></tr>
+		<tr><td>font</td><td align="center">'Arial'</td><td>The font that will be used to print the <i>text</i>.</td></tr>
+	</table>
+</div>
 
 
 <div id="drag" style="display: none"><br><h1>JPS.LIB.DRAG(data)</h1><br><br>
@@ -422,7 +575,92 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>pause</td><td align="center">'Space'</td><td>The key to toggle pause. The "Pause" is done by setting the <i>speed</i> property of the system to 0 and back, this means the system will still be rendered.</td></tr>
 		<tr><td>exclude</td><td align="center"><i>undefined</i></td><td>This can be an object or an Array with objects that contains <i>x</i>, <i>y</i>, <i>w</i> and <i>h</i> properties to define areas on the canvas where the drag option cannot be used.</td></tr>
 	</table>
+</div>
 
+
+<div id="controller" style="display: none"><br><h1>JPS.LIB.CONTROLLER(data)</h1><br><br>
+	Allows u to control one or multiple particles/objects with the keyboard.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>binds</td><td align="center"><i>undefined</i></td><td>A Array with objects that contains the key bindings. The objects should contain the following properties...<br><br><b><i>key</i></b>: The keycode of the key<br><b><i>target</i></b>: The object that will be controlled<br><b><i>value</i></b>: Defines how much will added in 1 seconds<br><b><i>prop</i></b>: The name of the property that will be changed<br><br>If <b><i>prop</i></b> is <u>not</u> defined the modifier will perform a bidirectional movement...<br><br><b><i>id</i></b>: The animation layer. With '' it affects the x & y properties directly, which is also the default value<br><b><i>angle</i></b>: Define this property to set the angle (in radiant), default is 0</td></tr>
+		<tr><td>target</td><td align="center"><i>undefined</i></td><td>If you want all bindings to control the same object, you can define this value instead in the binds. Binding a target in <i>binds</i> is still possible and has higher priority.</b></td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>This callback function will be called everytime when a key state changes. Compared to the "manuel" EventListener, this will only triggers once when the key is pressed or released. The callback is called with the following arguments:<br><br><b><i>callback(keyCode, down, modifier, keyEvent)</i></b></td></tr>
+	</table>
+
+	<br><br>
+
+	The <i>binds</i> Array to implement a usual Arrowkeys control would look like this...
+
+	<br><br>
+
+	<pre><code>
+<font color="#AAAAAA">// normal axis movement</font>
+[
+	{key:'ArrowUp',    value:-100, prop:'y'},
+	{key:'ArrowDown',  value:100,  prop:'y'},
+	{key:'ArrowRight', value:100,  prop:'x'},
+	{key:'ArrowLeft',  value:-100, prop:'x'}
+]
+
+<font color="#AAAAAA">// bidirectional movement</font>
+[
+	{key:'ArrowUp',    value:100},
+	{key:'ArrowDown',  value:100, angle:Math.PI},
+	{key:'ArrowRight', value:100, angle:Math.PI/2},
+	{key:'ArrowLeft',  value:100, angle:-Math.PI/2}
+]
+	</code></pre>
+
+	<br><br>
+
+	This modifier also contains a <i>keys</i> property, this object stores any key while its pressed under its code, even if the modifier isn't included in a system. To test if space is pressed u can use: 
+
+	<br><br>
+
+	<pre><code>
+myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when space is currently pressed</font>
+	</code></pre>
+</div>
+
+
+<div id="grid" style="display: none"><br><h1>JPS.LIB.GRID(data)</h1><br><br>
+	Stores the particles in a Array structure for quick access. If u wanna do nearby based effects between particles, like collision detection, this modifier can save u a massive amount of rendertime. To give other modifiers easy access to this modifier it stores its reference directly in the system as <i>grid</i> property.
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>cx</td><td align="center">200</td><td>The amount of cells in the x-direction.</td></tr>
+		<tr><td>cy</td><td align="center">200</td><td>The amount of cells in the y-direction.</td></tr>
+		<tr><td>cw</td><td align="center">50</td><td>Width of a cell.</td></tr>
+		<tr><td>ch</td><td align="center">50</td><td>Height of a cell.</td></tr>
+	</table>
+
+	<br><br>
+
+	To avoid unnecessary checks be sure that cx*cw and cy*ch is big enough to cover your whole stage. Particles that leaving the area goes back in on the opposite side. Smaller cells decreases the amount of checks but increase the amount of iterations inside the grid, the best way is to test around with the cell sizes while observing the rendertime. The Grid is updated during the renderprocess, while rendering it accesses the data of the previous rendering but due the grid structure its very unlikely that particles missed in the detection.<br><br>To perform a test, use the <i>test</i> method of this modifier...
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="350">Name</th><th>Description</th></tr>
+		<tr><td>test(particle, radius, callback)</td><td>Calls the <i>callback</i> function with every particle nearby the given <i>particle</i> in the <i>radius</i>. The callback function is called with the following arguments...<br><br><b>callback(particle1, particle2, distance, x-distance, y-distance)</b></td></tr>
+	</table>
+</div>
+
+
+<div id="rendertime" style="display: none"><br><h1>JPS.LIB.RENDERTIME(data)</h1><br><br>
+	Stabilizes the <i>system.rendertime</i> property for better readability. 
+	
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
+		<tr><td>count</td><td align="center">30</td><td>Defines how many frames get counted to calculate the average frametime.</td></tr>
+	</table>
 </div>
 
 
@@ -431,65 +669,200 @@ All modifiers take an optional arguments object to change their behavior, otherw
 <!-- ########################################################################################################################## -->
 
 
-<div id="slider" style="display: none"><br><h1>JPS.LIB.SLIDER(data)</h1><br><br>
-	Adds a scroller to control a property of a given object.
+<div id="tools" style="display: none"><br><h1>JPS.TOOLS</h1><br><br>
+	With this Library comes a few functions that u can use in your projects when JPS.LIB is included. 
 	
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.RNDASN(target, ...arguments)</h1><br>
+
+	Works like Object.assign() but is randomizing the values before copying into the target. It also supports filter and overwriting by passing Array's and Boolean's in the arguments...
+
 	<br><br>
 
 	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>x,y</td><td align="center">5</td><td>The position of the slider.</td></tr>
-		<tr><td>w,h</td><td align="center">250,25</td><td>The width and height of the slider.</td></tr>
-		<tr><td>vertical</td><td align="center"><i>undefined</i></td><td>If this value is true, the slider will be rotated by 90 degrees.</td></tr>
-		<tr><td>target</td><td align="center"><i>undefined</i></td><td>The object that will be controlled. If this is undefined, it automatically selects the system when added to it.</td></tr>
-		<tr><td>prop</td><td align="center">'x'</td><td>The name of the property of the target object that will be changed.</td></tr>
-		<tr><td>start</td><td align="center">0</td><td>Start value of the slider (left/bottom).</td></tr>
-		<tr><td>end</td><td align="center">100</td><td>End value of the slider (right/top).</td></tr>
-		<tr><td>text</td><td align="center">'%%value'</td><td>The caption of the slider. Insert '%%value' to display the current slider value.</td></tr>
-		<tr><td>color1</td><td align="center">'white'</td><td>The foreground color.</td></tr>
-		<tr><td>color2</td><td align="center">'grey'</td><td>Background color.</td></tr>
-		<tr><td>line</td><td align="center">2</td><td>Line thickness.</td></tr>
-		<tr><td>margin</td><td align="center">5</td><td>Margin between slider and frame.</td></tr>
-		<tr><td>slider</td><td align="center">.1</td><td>The width of the slider inside the frame (1 = 100%).</td></tr>
-		<tr><td>digits</td><td align="center">2</td><td>The amount of decimals used to display '%%value' in the <i>text</i>.</td></tr>
-		<tr><td>font</td><td align="center">'Arial'</td><td>The font that will be used to print the <i>text</i>.</td></tr>
+		<tr><th width="200">Type</th><th>Description</th></tr>
+		<tr><td>Object</td><td>All properties of the object will be randomized and copied into the target.</td></tr>
+		<tr><td>Array</td><td>When u pass an Array, this function is using it as a filterlist for all following objects. If u dont want to copy the x & y properties for example, pass <i>['x','y']</i> before the objects.</td></tr>
+		<tr><td>Boolean</td><td>A Boolean defines if the following objects will overwrite existing properties. Default is <i>false</i>.</td></tr>
 	</table>
 
-</div>
+	<br><br><hr><br><br>
 
+	<h1>JPS.TOOLS.LINE(ctx, x, y, w, h, stroke, line)</h1><br>
 
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-<!-- ########################################################################################################################## -->
-
-
-
-<div id="visible" style="display: none"><br><h1>JPS.LIB.VISIBLE(data)</h1><br><br>
-	Does a visibility and mouseover check and stores it as <i>visible</i> and <i>mouseover</i> properties inside the particle. 
-	
-	<br><br>
-
-	<table width="100%">
-		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
-		<tr><td>mode</td><td align="center">2</td><td>This value is returned by the render function when a particle fails the visibility test. 0: Nothing, 1: Delete particle, 2: Skip render process.</td></tr>
-	</table>
-	
-	<br><br>
-	
-	Besides that this modifier has some properties...
+	Draws a line.
 
 	<br><br>
 
 	<table width="100%">
 		<tr><th width="200">Name</th><th>Description</th></tr>
-		<tr><td>select</td><td>The current selected particle under the mouse, available after the render process.</td></tr>
-		<tr><td>x,y</td><td>Contains the current <u><b>transformed</b></u> mouseposition in the system. This allows u to use this modifier as a <i>target</i> for some other modifiers, like Magnet or Align.</td></tr>
-		<tr><td>mx,my</td><td>Contains the current mouseposition on the canvas.</td></tr>
+		<tr><td>ctx</td><td>Canvas rendering context</td></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>w, h</td><td>Width and height of the line</td></tr>
+		<tr><td>stroke</td><td>Color of the line</td></tr>
+		<tr><td>line</td><td>Line thickness</td></tr>
 	</table>
 
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.RECT(ctx, x, y, w, h, fill, stroke, line, round)</h1><br>
+
+	Draws a rectangle.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>ctx</td><td>Canvas rendering context</td></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>w, h</td><td>Width and height</td></tr>
+		<tr><td>fill</td><td>Fillcolor, set to 0/<i>undefined</i> for no filling</td></tr>
+		<tr><td>stroke</td><td>Color of the outline, set to 0/<i>undefined</i> for no outline</td></tr>
+		<tr><td>line</td><td>Line thickness</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.CIRC(ctx, x, y, radius, fill, stroke, line, start, end)</h1><br>
+
+	Draws a circle.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>ctx</td><td>Canvas rendering context</td></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>radius</td><td>Radius</td></tr>
+		<tr><td>fill</td><td>Fillcolor</td></tr>
+		<tr><td>stroke</td><td>Color of the outline</td></tr>
+		<tr><td>line</td><td>Line thickness</td></tr>
+		<tr><td>start</td><td>Startangle</td></tr>
+		<tr><td>end</td><td>Endangle</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.POLY(ctx, points, x, y, w, h, fill, stroke, line)</h1><br>
+
+	Draws a polygon.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>ctx</td><td>Canvas rendering context</td></tr>
+		<tr><td>points</td><td>Array with objects that cointains <i>x</i> and <i>y</i> properties</td></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>w, h</td><td>Width and height of the polygon</td></tr>
+		<tr><td>fill</td><td>Fillcolor</td></tr>
+		<tr><td>stroke</td><td>Color of the outline</td></tr>
+		<tr><td>line</td><td>Line thickness</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.PRINT(ctx, text, x, y, height, fill, stroke, line, font, align, base)</h1><br>
+
+	Draws a text.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>ctx</td><td>Canvas rendering context</td></tr>
+		<tr><td>text</td><td>Text</td></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>height</td><td>Fontheight</td></tr>
+		<tr><td>fill</td><td>Fillcolor</td></tr>
+		<tr><td>stroke</td><td>Color of the outline</td></tr>
+		<tr><td>line</td><td>Line thickness</td></tr>
+		<tr><td>font</td><td>Fonttype without the height. If u want to define the height thru this parameter, be sure the <i>height</i> parameter is not set!</td></tr>
+		<tr><td>align</td><td>Horizontal textalign: <i>'left'</i>, <i>'center'</i> or <i>'right'</i></td></tr>
+		<tr><td>base</td><td>Vertical textalign: <i>'top'</i>, <i>'middle'</i> or <i>'bottom'</i></td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.INRECT(x,y,a,b,c,d)</h1><br>
+
+	Tests if a point is inside a rectangle.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>a, b</td><td>Topleft of the rectangle</td></tr>
+		<tr><td>c, d</td><td>Size of the rectangle</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.OUTRECT(x,y,a,b,c,d)</h1><br>
+
+	Tests if a point is outside a rectangle and returns the side of collision (1: Left, 2: Right, 3: Top, 4: Bottom).
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>x, y</td><td>Position</td></tr>
+		<tr><td>a, b</td><td>Topleft of the rectangle</td></tr>
+		<tr><td>c, d</td><td>Size of the rectangle</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.INBOUND(x,y,w,h,a,b,c,d)</h1><br>
+
+	Tests if 2 rectangles overlap.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>x, y</td><td>Topleft of the first rectangle</td></tr>
+		<tr><td>w, h</td><td>Size of the first rectangle</td></tr>
+		<tr><td>a, b</td><td>Topleft of the second rectangle</td></tr>
+		<tr><td>c, d</td><td>Size of the second rectangle</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.OUTBOUND(x,y,w,h,a,b,c,d)</h1><br>
+
+	Tests if a rectangle is outside another rectange and returns the side of collision (1: Left, 2: Right, 3: Top, 4: Bottom).
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>x, y</td><td>Topleft of the first rectangle</td></tr>
+		<tr><td>w, h</td><td>Size of the first rectangle</td></tr>
+		<tr><td>a, b</td><td>Topleft of the second rectangle</td></tr>
+		<tr><td>c, d</td><td>Size of the second rectangle</td></tr>
+	</table>
+
+	<br><br><hr><br><br>
+
+	<h1>JPS.TOOLS.INTERSECT(x,y,w,h,a,b,c,d)</h1><br>
+
+	Tests if 2 lines intersect.
+
+	<br><br>
+
+	<table width="100%">
+		<tr><th width="200">Name</th><th>Description</th></tr>
+		<tr><td>x, y</td><td>Position of the first line</td></tr>
+		<tr><td>w, h</td><td>Size of the first line</td></tr>
+		<tr><td>a, b</td><td>Position of the second line</td></tr>
+		<tr><td>c, d</td><td>Size of the second line</td></tr>
+	</table>
+
+
 </div>
-
-
 
 </body>
 </html>

@@ -98,14 +98,15 @@
 <li><a href="#" onclick="selectPage('particles')">Particles</a></li>
 <li><a href="#" onclick="selectPage('modifiers')">Modifiers</a></li>
 <li><a href="#" onclick="selectPage('random')">Randomization</a></li>
-<li><a href="#" onclick="selectPage('about')">About</a></li>
 <li>
 	<a href="#">Samples</a>
 	<ul class="dropdown">
 		<li><a href="#" onclick="selectPage('smp_stars')">Starfield</a></li>
-		<li><a href="#" onclick="selectPage('smp_balls')">Bouncing Balls</a></li>
+		<li><a href="#" onclick="selectPage('smp_balls')">Bouncers</a></li>
+		<li><a href="#" onclick="selectPage('smp_neuron')">Neurons</a></li>
 		<li><a href="#" onclick="selectPage('smp_magnet')">Magnet</a></li>
 		<li><a href="#" onclick="selectPage('smp_space')">Spacerace</a></li>
+		<li><a href="#" onclick="selectPage('smp_asteroids')">Asteroids</a></li>
 	</ul>
 </li>
 <li><a href="mods.html">Library >></a></li>
@@ -116,24 +117,55 @@
 <!-- ########################################################################################################################## -->
 
 <div id="overview"><br><h1>JPS - Javascript Particle System</h1><br>
-	This is a lightweight modular Particlesystem for Javascript, the focus during the development was on efficiency, flexibility and usability. The main file is only 3kb and has just around 100 lines of code (without empty & comment lines) but offers all possibilities u need for creating your animations, from simple effects over scientific simulations upto full games!<br><br><br>
+	This is a lightweight modular Particlesystem for Javascript, the focus during the development was on efficiency, flexibility and usability. The main file is only 4kb and has just around 100 lines of code (without empty & comment lines) but offers all possibilities u need for creating your animations, from simple effects over scientific simulations upto full games!
 
-	<h1>Basic Implementation:</h1>
+	<br><br><hr><br><h1>Basic Implementation</h1><br>
 
-	<pre><code>window.onload = function() {
+	<pre><code>
+window.onload = function() {
 	can = document.getElementById('myCanvas')
 	ctx = can.getContext('2d')
 
-	system = new JPS.SYSTEM()					<font color="#AAAAAA">//create the particlesystem</font>
+	system = new JPS.SYSTEM(ctx)				<font color="#AAAAAA">// create the particlesystem</font>
+
 	render()
 }
 
 function render() {
-	ctx.clearRect(0, 0, can.width, can.height)	<font color="#AAAAAA">//clear the canvas (if u want)</font>
-	system.render(ctx)							<font color="#AAAAAA">//render the particlesystem</font>
+	ctx.clearRect(0, 0, can.width, can.height)
+
+	system.render()								<font color="#AAAAAA">// render the particlesystem</font>
 
 	requestAnimationFrame(render)
-}</pre></code>
+}
+
+</pre></code>
+
+	<br><br><hr><br><h1>License</h1><br>
+
+	<pre><code>
+		MIT License
+
+		Copyright (c) 2023 npc299792
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the "Software"), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+		
+		The above copyright notice and this permission notice shall be included in all
+		copies or substantial portions of the Software.
+		
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+	</pre></code>
 </div>
 
 
@@ -147,16 +179,19 @@ function render() {
 
 
 
-<div id="system" style="display: none"><br><h1>Methods</h1>
+<div id="system" style="display: none"><br><h1>System</h1><br>
+	Basically a <i>JPS.SYSTEM</i> is a collection of modifiers and particles, thru the constructor u can already add modifiers and set a Canvas 2D context for this system. After creating the system u can access the following methods and properties...
+
+	<br><br><br><h1>Methods</h1>
 
 	<table width="100%">
-		<tr><td width="250">spawn(count, ctx, props)</td><td>Spawns the given <i>count</i> of particles in the system. The <i>ctx</i> (Canvas 2D context) is only required if u use it in a <i>init()</i> method in one of your modifiers. <i>props</i> is an optional Object with properties that will be copied into the generated particles before the <i>init()</i> methods are called. Returns a Array with the created Particles, if only 1 Particle is created it returns the Particle itself.</td></tr>
+		<tr><td width="300">spawn(count, data)</td><td>Spawns the given <i>count</i> of particles in the system. <i>data</i> is a optional object with properties that will be copied into the generated particles.<br><br>Returns a Array with the created particles, if only 1 particle is created it returns the particle itself.</td></tr>
+		<tr><td>render(ctx, time)</td><td>Renders the whole system on the given <i>ctx</i> (Canvas 2D context). <i>time</i> defines the passed time since the last rendering in milliseconds (Default: 16.66 = 60fps). This method also can called without the <i>ctx</i> parameter, be sure the <i>render()</i> methods of your modifiers are prepared for it.</td>
+		<tr><td>count(type, collect)</td><td>Returns the amount of particles in the system. If type is given, it only counts particles of the same type, also can be an Array with a list of types. If <i>collect</i> is <i>true</i> or 1, this function returns a array with the particles that got found.</td>
+		<tr><td>add(...args)</td><td>Adds the given modifiers to the system. Also accepts Arrays with modifiers.<br><br>U also can pass an Canvas 2D context to store it in the system, the system uses it when no other context is given. This is maybe needed when a modifier uses the context from the arguments in a <i>init()</i> or <i>exit()</i> method.</td>
+		<tr><td>remove(...args)</td><td>Removes the given modifiers and particles from the system. Also accepts Arrays with modifiers and particles.</td>
 		<tr><td>clear(particles, modifiers)</td><td>Deletes all particles and/or modifiers from the system.</td>
-		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete one or multiple particles by its instance use the <i>removeParticle()</i> method. The <i>ctx</i> is only required if u need it in a <i>exit()</i> method in one of your modifiers.</td>
-		<tr><td>render(ctx, time)</td><td>Renders the whole system on the given <i>ctx</i>. <i>time</i> defines the passed time since the last rendering in milliseconds (Default: 16.66 = 60fps). This method also can called without the <i>ctx</i> parameter, be sure the <i>render()</i> methods of your modifiers are prepared for it.</td>
-		<tr><td>addModifier(...args)</td><td>Adds the given modifiers to the system. Also accepts Arrays with modifiers.<br><br>If a modifier has a init method and the system already has particles, the init method will be called with all existing particles. If a modifier needs the ctx in the init method u need to deliver it manually via the arguments:<br><font color="#AAAAAA">system.addModifier(ctx, mod1, mod2, ...) // sets the ctx for all following modifiers</font></td>
-		<tr><td>removeModifier(...args)</td><td>Removes the given modifiers from the system. Also accepts Arrays with modifiers.</td>
-		<tr><td>removeParticle(...args)</td><td>Removes the given particles from the system. U can pass the particle objects itself or their index. Also accepts Arrays with particles or their indexes.<br><br>If one of your modifiers needs the ctx in the exit method u need to deliver it manually via the arguments:<br><font color="#AAAAAA">system.removeParticle(ctx, p1, p2, ...) // sets the ctx for all following particles</font></td>
+		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete one or multiple particles by its instance use the <i>remove()</i> method. The <i>ctx</i> is only required when u need it in a <i>exit()</i> method in one of your modifiers.</td>
 	</table><br><br>
 
 
@@ -166,14 +201,16 @@ function render() {
 		<tr><td>x</td><td align="center">0</td><td>The X-Offset of system in pixels. Moves the whole system left or right.</td></tr>
 		<tr><td>y</td><td align="center">0</td><td>The Y-Offset of system in pixels. Moves the whole system up or down.</td></tr>
 		<tr><td>s</td><td align="center">1</td><td>The scale of system (1 = 100%).</td></tr>
-		<tr><td>time</td><td align="center">0</td><td>The Time the system is already running (in milliseconds).</td></tr>
 		<tr><td>speed</td><td align="center">1</td><td>The animationspeed of the system (1 = 100%).</td></tr>
-		<tr><td>max</td><td align="center"><i>undefined</i></td><td>Sets a limit of particles in the system. If this is 0, <i>undefined</i> or <i>false</i>, the amount is unlimited.</td></tr>
+		<tr><td>time</td><td align="center">0</td><td>The time the system is already running (in milliseconds). This value is influenced by <i>system.speed</i>.</td></tr>
 		<tr><td>rendertime</td><td align="center"><i>undefined</i></td><td>The rendertime in milliseconds. This does <u>not</u> includes the prev and post modifiers.</td></tr>
+		<tr><td>max</td><td align="center"><i>undefined</i></td><td>Sets a limit of particles in the system. If this is 0, <i>undefined</i>, <i>null</i> or <i>false</i>, the amount is unlimited.</td></tr>
 		<tr><td>skip</td><td align="center">0</td><td>Counts how many particles skipped the render process in the last rendering.</td></tr>
+		<tr><td>ctx</td><td align="center"><i>undefined</i></td><td>Can be set to store a Canvas 2D context in the system, check <i>add()</i>.</td></tr>
+		<tr><td>iter</td><td align="center">0</td><td>The current rendering index in <i>system.particles</i>.</td></tr>
 		<tr><td>particles</td><td align="center"><i>Array</i></td><td>Contains all particles of the system.</td></tr>
 		<tr><td>modifiers</td><td align="center"><i>Object</i></td><td>Contains 5 Array's to store the modifiers.</td></tr>
-	</table><br><br>
+	</table>
 </div>
 
 
@@ -185,7 +222,7 @@ function render() {
 
 
 <div id="particles" style="display: none"><br><h1>Particles</h1><br>
-	Each particle is a simple Javascript Object that will be stored in the <i>system.particles</i> Array. To be sure every particle will be correctly initiated u should always create them with the <i>system.spawn()</i> method.
+	Each particle is a simple Javascript Object that will be stored in the <i>system.particles</i> Array. To be sure every particle will be correctly initiated u should always create them with the <i>system.spawn()</i> method. Every particle has the following properties...
 
 	<br><br>
 
@@ -199,9 +236,9 @@ function render() {
 		<tr><td>sy</td><td align="center">1</td><td>The Y-Scale of the particle.</td></tr>
 		<tr><td>rx</td><td align="center">0</td><td>The X-Rotation of the particle.</td></tr>
 		<tr><td>ry</td><td align="center">0</td><td>The Y-Rotation of the particle.</td></tr>
-		<tr><td>age</td><td align="center">0</td><td>The time the particle already exist (in Milliseconds).</td></tr>
+		<tr><td>age</td><td align="center">0</td><td>The time the particle already exist (in Milliseconds). This value is influenced by <i>system.speed</i>.</td></tr>
 		<tr><td>life</td><td align="center"><i>undefined</i></td><td>The lifetime of the particle (in Milliseconds). Is this <i>undefined</i> or 0, the particle will not removed automatically.</td></tr>
-		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particle, can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. A Particle only interacts with modifiers of the same type, if this is undefined / null / false / 0, the particle will interact with all modifiers whatever type it has.</td></tr>
+		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particle, can be a <i>Number</i>, <i>String</i> or a <i>Object</i>. A particle only interacts with modifiers of the same type, if this is undefined / null / false / 0, the particle will interact with all modifiers whatever type it has.</td></tr>
 	</table>
 </div>
 
@@ -220,13 +257,13 @@ function render() {
 
 	<table width="100%">
 		<tr><th width="350">Name</th><th>Description</th></tr>
-		<tr><td>init(particle, ctx, system)</td><td>Will be invoked when the particle is initiated. All particle properties have their default values at that point.</td></tr>
-		<tr><td>render(particle, ctx, time, system)</td><td>Will be invoked when the particle is rendered. <i>time</i> defines the past time since the last rendering as a multiplier. This function can return 2 values, if it's returning 1 the particle will be deleted, if it returns 2 the render process for this particle will be skipped. In both cases <i>system.skip</i> will be incremented.<br><br>
+		<tr><td>init(particle, ctx, system)</td><td>Will be invoked when the particle is created. All particle properties have their default values at that point.</td></tr>
+		<tr><td>render(particle, ctx, system, time)</td><td>Will be invoked when the particle is rendered. <i>time</i> defines the past time since the last rendering as a multiplier (16ms = 0.016).<br><br>This function can return 2 values, if it's returning 1 the particle will be deleted, if it returns 2 the render process for this particle will be skipped. In both cases <i>system.skip</i> will be incremented. Return 0/<i>undefined</i> todo nothing.<br><br>
 		<font color="red"><u>Important:</u> </font> When this function is called the canvas is already fully transformed to the particle properties! If u draw something at the coordinates 0,0 it will be drawn at the x and y coordinates of the particle.
 		</td></tr>
 		<tr><td>exit(particle, ctx, system)</td><td>Will be invoked when the particle is being deleted.</td></tr>
-		<tr><td>prev(ctx, time, system)</td><td>Will be invoked before the rendering starts.</td></tr>
-		<tr><td>post(ctx, time, system)</td><td>Will be invoked after the rendering is done.</td></tr>
+		<tr><td>prev(ctx, system, time)</td><td>Will be invoked before the rendering starts.</td></tr>
+		<tr><td>post(ctx, system, time)</td><td>Will be invoked after the rendering is done.</td></tr>
 	</table>
 
 	<br><br>
@@ -254,14 +291,14 @@ function render() {
 
 	<br><br>
 
-	or managed afterwards with the <i>addModifier</i> and <i>removeModifier</i> methods...
+	or managed afterwards with the <i>add</i> and <i>remove</i> methods of the system...
 
 	<br><br>
 
 	<code>
-		system.addModifier(mod1, mod2, ...)
+		system.add(mod1, mod2, ...)
 		<br><br>
-		system.removeModifier(mod1, mod2, ...)
+		system.remove(mod1, mod2, ...)
 	</code>
 
 	<br><br><hr><br>
@@ -269,10 +306,13 @@ function render() {
 	<h1>Order</h1><br>
 
 	Modifiers will be executed in the same order as they added, this can be important depending what the modifier does. Usally the following order is a good way...
+
 	<br><br>
+	
 	1. Animation<br>
 	2. Interaction<br>
 	3. Drawing<br>
+	4. Development<br>
 
 	<br><br><hr><br>
 
@@ -286,20 +326,18 @@ function render() {
 
 	<br><br>
 
-	<pre><code>
-myMod = {
+	<pre><code>myMod = {
 	init: function(p) {
 		p.vx = Math.random() * 100						<font color="#AAAAAA">// set a random velocity</font>
 		p.y = Math.random() * can.height				<font color="#AAAAAA">// set a random height</font>
 	},
-	render: function(p,ctx,time) {
+	render: function(p, ctx, sys, time) {
 		p.x += p.vx * time								<font color="#AAAAAA">// move the particle</font>
 		ctx.fillStyle = 'red'							<font color="#AAAAAA">// set the fillstyle</font>
 		ctx.fillRect(0, 0, 20, 20)						<font color="#AAAAAA">// draw the rectangle</font>
 		if (p.x < 0 || p.x > can.width) p.vx = -p.vx	<font color="#AAAAAA">// check if the rectangle is outbound</font>
 	}
-}
-	</code></pre>
+}</code></pre>
 	
 	<br><br>
 
@@ -307,10 +345,8 @@ myMod = {
 
 	<br><br>
 
-	<pre><code>
-system = new JPS.SYSTEM(myMod)	<font color="#AAAAAA">// create the system</font>
-system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
-	</code></pre>
+	<pre><code>system = new JPS.SYSTEM(myMod)	<font color="#AAAAAA">// create the system</font>
+system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font></code></pre>
 
 
 
@@ -325,7 +361,7 @@ system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
 
 
 <div id="random" style="display: none"><br><h1>Randomization</h1><br>
-	A important part of every Particlesystem is the randomization, without it all particles would look and do the same. To support it the JPS Object contains a helpful function:
+	A important part of every Particlesystem is the randomization, without it all particles would look and do the same. To support it the TOOLS object contains a helpful function:
 
 	<br><br>
 
@@ -335,18 +371,20 @@ system.spawn(50)				<font color="#AAAAAA">// spawn 50 particles</font>
 JPS.TOOLS.RND()				<font color="#AAAAAA">// returns 0</font>
 JPS.TOOLS.RND(5)			<font color="#AAAAAA">// returns 5</font>
 JPS.TOOLS.RND(5,5)			<font color="#AAAAAA">// returns a value between 0 and 10</font>
-JPS.TOOLS.RND(20,10,1)		<font color="#AAAAAA">// returns a integer between 10 and 30</font>
+JPS.TOOLS.RND(0,10)			<font color="#AAAAAA">// returns a value between -10 and 10</font>
+JPS.TOOLS.RND(20,10,1)		<font color="#AAAAAA">// returns a <u>integer</u> between 10 and 30</font>
 
 <font color="#AAAAAA">// u can also pass an array</font>
-JPS.TOOLS.RND([50,5])		<font color="#AAAAAA">// returns a value between 45 and 55</font>
+JPS.TOOLS.RND([50,10])		<font color="#AAAAAA">// returns a value between 40 and 60</font>
 JPS.TOOLS.RND([100,50,1])	<font color="#AAAAAA">// returns a integer between 50 and 150</font>
 
 <font color="#AAAAAA">// if u pass an array that first entry is <u>not</u> a <i>Number</i>, it will choose a random entry of it</font>
 JPS.TOOLS.RND(['red', 'green', 'blue'])	<font color="#AAAAAA">// returns red, green or blue</font>
 JPS.TOOLS.RND([[5], 10, 20, 40])		<font color="#AAAAAA">// returns 5, 10, 20 or 40</font>
-JPS.TOOLS.RND([[15,5],[45,5]])			<font color="#AAAAAA">// returns a value between 10-20 or 40-50</font>
+JPS.TOOLS.RND([[15,5], [45,5]])			<font color="#AAAAAA">// returns a value between 10-20 or 40-50</font>
 
-<font color="#AAAAAA">// pass an object to create a random color, default is r:0, g:0, b:0, a:1</font>
+<font color="#AAAAAA">// pass an object to create a random color, defaults are r:0, g:0, b:0, a:1
+// rgb values will be automatically set as integers</font>
 JPS.TOOLS.RND({r:[100,100], a:[0.6,0.3]})
 JPS.TOOLS.RND({r:255, g:[128,128], b:[128,128], a:1})
 	</code></pre>
@@ -368,6 +406,7 @@ JPS.TOOLS.RND({r:255, g:[128,128], b:[128,128], a:1})
 system = new JPS.SYSTEM(
 	new JPS.LIB.EMITTER({x:0, y:0, z:1000, w:500, h:500, d:500, spawn:50, rate:50}),
 	new JPS.LIB.ANIMATE({z:[-150,80]}),
+
 	new JPS.LIB.CAMERA({mode:1}),
 	new JPS.LIB.SPHERE({radius:[2,1.5]}),
 	new JPS.LIB.INFO()
@@ -387,7 +426,7 @@ system = new JPS.SYSTEM(
 
 
 
-<div id="smp_balls" style="display: none"><br><h1>Bouncing Balls</h1><br>
+<div id="smp_balls" style="display: none"><br><h1>Bouncers</h1><br>
 
 	<pre><code>
 system = new JPS.SYSTEM(
@@ -415,26 +454,58 @@ system = new JPS.SYSTEM(
 <!-- ########################################################################################################################## -->
 
 
+<div id="smp_neuron" style="display: none"><br><h1>Neurons</h1><br>
+
+	<pre><code>
+system = new JPS.SYSTEM(
+	new JPS.LIB.EMITTER({x:w/2, y:h/2, w:w, h:h, rate:0, spawn:50}),
+	new JPS.LIB.ANIMATE({x:[0,50], y:[0,50]}),
+	new JPS.LIB.BOX({w:w, h:h}),
+	
+	new JPS.LIB.CONNECT(),
+	new JPS.LIB.BACKSCREEN({filter:'opacity(5%)'}),
+
+	new JPS.LIB.RENDERTIME(),
+	new JPS.LIB.INFO({h:20, stroke:'black', line:4})
+)
+	</pre></code>
+
+	<br><br>
+
+	<center>
+		<a href="sample3.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+	</center>
+
+</div>
+
+
+
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+<!-- ########################################################################################################################## -->
+
+
 
 <div id="smp_magnet" style="display: none"><br><h1>Magnet</h1><br>
 
 	<pre><code>
 system = new JPS.SYSTEM(
 	new JPS.LIB.EMITTER({x:w/2, y:h/2, w:w, h:h, rate:0, spawn:500}),
+
 	(magnet = new JPS.LIB.MAGNET()),
-	new JPS.LIB.CIRCLE(),
-	new JPS.LIB.INFO()
+
+	new JPS.LIB.CIRCLE()
 )
 
 document.addEventListener('mousedown', e => magnet.charge *= -1)
-document.addEventListener('mousemove', e => {magnet.x = e.clientX; magnet.y = e.clientY})
+document.addEventListener('mousemove', e => { magnet.x = e.clientX; magnet.y = e.clientY })
 	</pre></code>
 
 	<br><br>
 
 	<center>
 		Move the mouse over the screen, click to switch polarity<br>
-		<a href="sample3.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+		<a href="sample4.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
 	</center>
 
 </div>
@@ -450,30 +521,32 @@ document.addEventListener('mousemove', e => {magnet.x = e.clientX; magnet.y = e.
 <div id="smp_space" style="display: none"><br><h1>Spacerace</h1><br>
 
 	<pre><code>
-system = new JPS.SYSTEM(
-	new JPS.LIB.EMITTER({type:1, x:[w*.75,200], y:[h/2,100], rate:0, spawn:100}),
-
-	(magnet = new JPS.LIB.MAGNET({type:1, id:'v', x:w/2, y:h/2, radius:50000, charge:-20, pcharge:5, pow:2})),
-	new JPS.LIB.ANIMATE({type:1, x:0, y:[-150,1]}),
+system = new JPS.SYSTEM(ctx,
+	new JPS.LIB.EMITTER({type:'ship', x:[w*.75,200], y:[h/2,100], rate:0, spawn:100}),
+	new JPS.LIB.ANIMATE({type:'ship', x:0, y:[-150,1]}),
 	new JPS.LIB.ALIGN(),
+
+	(magnet = new JPS.LIB.MAGNET({id:'v', radius:50000, pow:2, charge:-20, pcharge:5})),
 			
-	new JPS.LIB.DRAG({exclude:{x:0, y:0, w:300, h:100}}),
-	new JPS.LIB.TRIANGLE({type:1, w:[15,5], h:[8,4]}),
-	new JPS.LIB.SPHERE({type:2, radius:[20,10]}),
+	new JPS.LIB.TRIANGLE({type:'ship', w:[15,5], h:[8,4]}),
+	new JPS.LIB.SPHERE({type:'star', radius:[40,10]}),
 
 	new JPS.LIB.SLIDER({prop:'speed', y:30, start:-5, end:5, text:'Speed: %%value'}),
-	new JPS.LIB.SLIDER({target:magnet, prop:'charge', y:60, start:-100, end:0, text:'Charge: %%value'}),
+	new JPS.LIB.SLIDER({prop:'charge', y:60, start:-100, end:0, text:'Charge: %%value', target:magnet}),
+
+	new JPS.LIB.DRAG({exclude:{x:0, y:0, w:300, h:150}}),
+	new JPS.LIB.RENDERTIME(),
 	new JPS.LIB.INFO()
 )
 
-system.spawn(1, ctx, {type:2, radius:50, x:w/2, y:h/2}) <font color="#AAAAAA">// add a single star</font>
-	</pre></code>
+magnet.target = system.spawn(1, {type:'star', x:w/2, y:h/2})
+	</code></pre>
 
 	<br><br>
 
 	<center>
 		Click and drag to move screen, use mousewheel to zoom<br>
-		<a href="sample4.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+		<a href="sample5.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
 	</center>
 
 </div>
@@ -486,37 +559,74 @@ system.spawn(1, ctx, {type:2, radius:50, x:w/2, y:h/2}) <font color="#AAAAAA">//
 
 
 
-<div id="about" style="display: none"><br><h1><u>License</u></h1><br>
+<div id="smp_asteroids" style="display: none"><br><h1>Asteroids</h1><br>
 
 	<pre><code>
-		MIT License
+<font color="#AAAAAA">// event handler #####################################################################################################</font>
 
-		Copyright (c) 2023 npc299792
+collision = function(p, q) {
+	if (p.type == 'rocket' && q.type == 'asteroid') {
+		system.remove(p, q)
+		if (q.s > 1) system.spawn(2, {type:'asteroid', x:q.x, y:q.y, s:q.s-1})
+		if (!system.count('asteroid')) {info.color='green'; info.text='YOU WON!'}
+	}
+	if (p.type == 'ship') {
+		system.remove(p)
+		controller.callback = null
+		info.color='red'; info.text='GAME OVER'
+	}
+}
 
-		Permission is hereby granted, free of charge, to any person obtaining a copy
-		of this software and associated documentation files (the "Software"), to deal
-		in the Software without restriction, including without limitation the rights
-		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-		copies of the Software, and to permit persons to whom the Software is
-		furnished to do so, subject to the following conditions:
-		
-		The above copyright notice and this permission notice shall be included in all
-		copies or substantial portions of the Software.
-		
-		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-		SOFTWARE.
+click = function(key, down) {
+	if (down && key == 'Space') {
+		var ship = controller.target
+		var c = Math.cos(ship.r), s = Math.sin(ship.r)
+		system.spawn(1, {
+			type: 'rocket', r: ship.r,
+			x: c*15 + ship.x, vx: c*300 + ship.vx,
+			y: s*15 + ship.y, vy: s*300 + ship.vy
+		})
+	}
+}
+
+<font color="#AAAAAA">// particle system ###################################################################################################</font>
+
+system = new JPS.SYSTEM(
+	new JPS.LIB.EMITTER({x:[w*.75,w/4], y:[h/2,h/2-100], type:'asteroid', rate:0, spawn:3}),
+	new JPS.LIB.ANIMATE({x:0, y:0, r:0}),
+
+	new JPS.LIB.COLLISION({double:1, callback:collision}),
+	new JPS.LIB.BOX({w:w, h:h, portal:1, callback:p => p.type == 'rocket' && 1}),
+	
+	new JPS.LIB.POLYGON({type:'asteroid', w:20, h:20, color:0, stroke:'white', vx:[0,50], vy:[0,50], vr:[0,.5], s:5}),
+	new JPS.LIB.TRIANGLE({type:'ship', w:25, h:15, color:'white'}),
+	new JPS.LIB.RECTANGLE({type:'rocket', w:10, h:2, color:'white'}),
+	
+	(info = new JPS.LIB.INFO({x:w/2, y:h/2, h:50, align:'center', text:''})),
+	(controller = new JPS.LIB.CONTROLLER({callback:click, binds:[
+		{key:'KeyW', value:100, id:'v'},
+		{key:'KeyA', value:-3,  prop:'r'},
+		{key:'KeyD', value:3,   prop:'r'}
+	]}))
+)
+
+controller.target = system.spawn(1, {type:'ship', x:w/4, y:h/2})
 	</pre></code>
 
+	<br><br>
+
+	<center>
+		<font color="#FF0000"><b>Destroy all asteroids!</b></font><br>
+		<table>
+			<tr><td align="center">W</td><td>Accelerate</td></tr>
+			<tr><td align="center">A</td><td>Turn left</td></tr>
+			<tr><td align="center">D</td><td>Turn right</td></tr>
+			<tr><td>Space</td><td>Fire</td></tr>
+		</table><br>
+		<a href="sample6.html" target="_blank"><font color="#AAAAAA"><h1>Open in new Tab</h1></font></a>
+	</center>
 
 </div>
-
-
-
 
 </body>
 </html>

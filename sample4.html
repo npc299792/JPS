@@ -36,27 +36,20 @@
 				// #########################################
 
 				system = new JPS.SYSTEM(
-					new JPS.LIB.EMITTER({type:1, x:[w*.75,200], y:[h/2,100], rate:0, spawn:100}),
+					new JPS.LIB.EMITTER({x:w/2, y:h/2, w:w, h:h, rate:0, spawn:500}),
 
-					(magnet = new JPS.LIB.MAGNET({type:1, id:'v', x:w/2, y:h/2, radius:50000, charge:-20, pcharge:5, pow:2})),
-					new JPS.LIB.ANIMATE({type:1, x:0, y:[-150,1]}),
-					new JPS.LIB.ALIGN(),
-					
-					new JPS.LIB.DRAG({exclude:{x:0, y:0, w:300, h:100}}),
-					new JPS.LIB.TRIANGLE({type:1, w:[15,5], h:[8,4]}),
-					new JPS.LIB.SPHERE({type:2, radius:[20,10]}),
+					(magnet = new JPS.LIB.MAGNET()),
 
-					new JPS.LIB.SLIDER({prop:'speed', y:30, start:-5, end:5, text:'Speed: %%value'}),
-					new JPS.LIB.SLIDER({target:magnet, prop:'charge', y:60, start:-100, end:0, text:'Charge: %%value'}),
-					new JPS.LIB.INFO()
+					new JPS.LIB.CIRCLE()
 				)
 
-				system.spawn(1, ctx, {type:2, radius:50, x:w/2, y:h/2})
+				document.addEventListener('mousedown', e => magnet.charge *= -1)
+				document.addEventListener('mousemove', e => { magnet.x = e.clientX; magnet.y = e.clientY })
 
 				render()
 			}
 
-			function render(time) {
+			function render() {
 				ctx.clearRect(0,0,w,h)
 				system.render(ctx)
 				requestAnimationFrame(render)

@@ -1,4 +1,4 @@
-﻿// JPS - Javascript Particle System  |  v0.98  |  npc299792  |  MIT Licence
+﻿// JPS - Javascript Particle System  |  v1.00  |  npc299792  |  MIT Licence
 
 const JPS = { TYPES: {
 	PARTICLE: {x:0, y:0, s:1, r:0, sx:1, sy:1, rx:0, ry:0, age:0}
@@ -9,23 +9,18 @@ const JPS = { TYPES: {
 JPS.TOOLS = {
 	RND: function(v = 0, r, i) {
 		if (Array.isArray(v)) {
-			if (typeof v[0] == 'number') { i=v[2]||i; r=v[1]; v=v[0]||0 }
+			if (typeof v[0] == 'number') { i=v[2]||i; r=v[1]; v=v[0] }
 			else return JPS.TOOLS.RND(v[~~(Math.random()*v.length)])
-		} 
-		if (typeof v == 'object') return JPS.TOOLS.RNDRGB(v)
+		}
+		if (typeof v == 'object') return JPS.TOOLS.RGB(JPS.TOOLS.RND(v.r),JPS.TOOLS.RND(v.g),JPS.TOOLS.RND(v.b),JPS.TOOLS.RND(v.a))
 		if (typeof v == 'string') return v
 		if (r) v += Math.random()*2*r - r
 		return i && ~~v || v
 	},
 
 	RGB: function(r = 0, g = 0, b = 0, a = 1) {
-		r = ((1<<24) + (r<<16) + (g<<8) + b).toString(16).slice(1)
-		a = ~~(a*255); a = (a < 16 && '0' || '') + a.toString(16)
-		return "#" + (r + a).toUpperCase()
-	},
-
-	RNDRGB: function(c) {
-		return JPS.TOOLS.RGB(JPS.TOOLS.RND(c.r,0,1), JPS.TOOLS.RND(c.g,0,1), JPS.TOOLS.RND(c.b,0,1), JPS.TOOLS.RND(c.a)) // ||0||1
+		if (typeof r == 'object') { a = r.a||1; b = r.b||0; g = r.g||0; r = r.r||0 }
+		return 'rgba('+ ~~r +','+ ~~g +','+ ~~b +','+ a +')'
 	},
 
 	TYP: function(m, p) {
@@ -37,23 +32,31 @@ JPS.TOOLS = {
 // #################################################################################################################################
 
 JPS.SYSTEM = class {
-	x = 0; y = 0; s = 1; time = 0; speed = 1; skip = 0
-	constructor() { this.clear(1,1); this.addModifier(...arguments) }
+	x = 0; y = 0; s = 1; time = 0; speed = 1; skip = 0; iter = 0
+	constructor() { this.clear(1,1); this.add(...arguments) }
 
-	spawn(c = 1, ctx, data) {
+	spawn(c = 1, data1, data2 = true, ctx) {
 		var list = []
 		while (c-- >= 1) {
 			if (this.max && this.max <= this.particles.length) break
-			var p = {...JPS.TYPES.PARTICLE, ...data}
-			this.modifiers.init.forEach(m => JPS.TOOLS.TYP(m.type,p.type) && m.init(p,ctx,this))
-			this.particles.unshift(p); list.push(p)
+			var p = {...JPS.TYPES.PARTICLE, ...data1}
+			this.modifiers.init.forEach(m => JPS.TOOLS.TYP(m.type,p.type) && m.init(p,ctx||this.ctx,this))
+			this.particles.unshift(p); list.push(p); data2 && Object.assign(p, data2 == true ? data1 : data2)
 		}
 		return list.length == 1 && list[0] || list
 	}
 
+	count(type, collect) {
+		if (!type) return this.particles.length
+		if (!Array.isArray(type)) type = [type]
+		var c=0,a=[]; this.particles.forEach(p => type.includes(p.type) && (collect ? a.push(p) : c++))
+		return collect ? a : c
+	}
+
 	delete(p, ctx) {
-		p = this.particles.splice(p,1)
-		this.modifiers.exit.forEach(m => JPS.TOOLS.TYP(m.type,p.type) && m.exit(p,ctx,this))
+		if (p <= this.iter && this.iter >= 0) this.iter--
+		p = this.particles.splice(p,1)[0]
+		this.modifiers.exit.forEach(m => JPS.TOOLS.TYP(m.type,p.type) && m.exit(p,ctx||this.ctx,this))
 	}
 	
 	clear(p, m) {
@@ -63,50 +66,48 @@ JPS.SYSTEM = class {
 	
 	// #############################################################################################################################
 	
-	addModifier() {
-		for (var m of arguments) {
-			if (Array.isArray(m)) { this.addModifier(...m); continue }
-			if (m.constructor.name == 'CanvasRenderingContext2D') { var ctx = m; break }
-			m.add?.(this)
-			for (var c in this.modifiers) if (m[c]) this.modifiers[c].push(m)
-			if (m.init) for (var p of this.particles) m.init(p,ctx,this)
+	add() {
+		for (var o of arguments) {
+			if (Array.isArray(o)) { this.add(...o); continue }
+			if (o.constructor.name == 'CanvasRenderingContext2D') { this.ctx = o; continue }
+			o.add?.(this)
+			for (var c in this.modifiers) if (o[c]) this.modifiers[c].push(o)
+			if (o.init) for (var p of this.particles) o.init(p,this.ctx,this)
 		}
 	}
 
-	removeModifier() {
-		for (var m of arguments) {
-			if (Array.isArray(m)) { this.removeModifier(...m); continue }
-			for (var c in this.modifiers) if (m[c]) {
-				m = this.modifiers[c].findIndex(s => m === s)
-				if (m >= 0) this.modifiers[c].splice(m,1)
+	remove() {
+		for (var o of arguments) {
+			if (Array.isArray(o)) { this.remove(...o); continue }
+			var i = this.particles.findIndex(p => o === p)
+			if (i >= 0) {
+				this.delete(i)
+			} else {
+				for (var c in this.modifiers) if (o[c]) {
+					i = this.modifiers[c].findIndex(m => o === m)
+					if (i >= 0) this.modifiers[c].splice(i,1)
+				}
+				o.remove?.(this)
 			}
-			m.remove?.(this)
-		}
-	}
-	
-	removeParticle() {
-		for (var p of arguments) {
-			if (Array.isArray(p)) { this.removeParticle(...p); continue }
-			if (p.constructor.name == 'CanvasRenderingContext2D') { var ctx = p; break }
-			if (typeof p !== Number) p = this.particles.findIndex(q => p === q)
-			if (p >= 0) this.delete(p,ctx)
 		}
 	}
 
 	// #############################################################################################################################
 	
 	render(ctx, time = 16.66) {
-		var stime = this.speed*time/1000
-		this.time += stime*1000; this.delta = time; this.skip = 0
+		var mtime = this.speed*time, stime = mtime/1000
+		this.time += mtime; this.skip = 0
+		ctx = ctx || this.ctx
 
-		this.modifiers.prev.forEach(m => m.prev(ctx,stime,this))
+		this.modifiers.prev.forEach(m => m.prev(ctx,this,stime))
 		var ctime = performance.now()
 		ctx?.save()
 
-		for (var i = 0; i < this.particles.length; i++) {
-			var p = this.particles[i]
-			p.age += stime*1000
-			if (p.life && p.age > p.life) { this.delete(i--); continue }
+		for (this.iter = 0; this.iter < this.particles.length; this.iter++) {
+			var p = this.particles[this.iter]
+			
+			p.age += mtime
+			if (p.life && p.age > p.life) { this.delete(this.iter,ctx); continue }
 			
 			if (ctx) {
 				ctx.setTransform(p.s*p.sx, p.s*p.rx, p.s*p.ry, p.s*p.sy, this.s*p.x+this.x, this.s*p.y+this.y)
@@ -114,13 +115,13 @@ JPS.SYSTEM = class {
 				p.r && ctx.rotate(p.r)
 			}
 			for (var m of this.modifiers.render) {
-				m = JPS.TOOLS.TYP(m.type,p.type) && m.render(p,ctx,stime,this,i)
-				if(m) { m == 1 && this.delete(i--); this.skip++; break }
+				m = JPS.TOOLS.TYP(m.type,p.type) && m.render(p,ctx,this,stime)
+				if(m) { m == 1 && this.remove(p); this.skip++; break }
 			}
 		}
 
 		ctx?.restore()
 		this.rendertime = performance.now() - ctime
-		this.modifiers.post.forEach(m => m.post(ctx,stime,this))
+		this.modifiers.post.forEach(m => m.post(ctx,this,stime))
 	}
 }

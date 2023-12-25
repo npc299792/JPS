@@ -1,0 +1,96 @@
+<html>
+	<head>
+		<title>JPS Sample 6</title>
+		<style>
+			body { 
+				background-color: rgba(50, 50, 50, 1); 
+			}
+			canvas {
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 1);
+				border: 2px ;
+			}
+			html, body {
+				margin: 0 !important;
+				padding: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<canvas id="game-view" width="1000" height="1000">#CANVAS_ERROR</canvas>
+		
+		<script src="JPS.js"></script>
+		<script src="JPS_LIB.js"></script>
+
+		<script>
+			window.onload = function() {
+				can = document.getElementById('game-view')
+				ctx = can.getContext('2d', { alpha: false })
+	
+				w = can.width = window.innerWidth
+				h = can.height = window.innerHeight
+				
+				// event handler #####################################################################################################
+
+				collision = function(p, q) {
+					if (p.type == 'rocket' && q.type == 'asteroid') {
+						system.remove(p, q)
+						if (q.s > 1) system.spawn(2, {type:'asteroid', x:q.x, y:q.y, s:q.s-1})
+						if (!system.count('asteroid')) {info.color='green'; info.text='YOU WON!'}
+					}
+					if (p.type == 'ship') {
+						system.remove(p)
+						controller.callback = null
+						info.color='red'; info.text='GAME OVER'
+					}
+				}
+
+				click = function(key, down) {
+					if (down && key == 'Space') {
+						var ship = controller.target
+						var c = Math.cos(ship.r), s = Math.sin(ship.r)
+						system.spawn(1, {
+							type:'rocket', r:ship.r,
+							x: c*15 + ship.x, vx: c*300 + ship.vx,
+							y: s*15 + ship.y, vy: s*300 + ship.vy
+						})
+					}
+				}
+
+				// particle system ###################################################################################################
+
+				system = new JPS.SYSTEM(
+					new JPS.LIB.EMITTER({x:[w*.75,w/4], y:[h/2,h/2-100], type:'asteroid', rate:0, spawn:1}),
+					new JPS.LIB.ANIMATE({x:0, y:0, r:0}),
+
+					new JPS.LIB.COLLISION({double:1, callback:collision}),
+					new JPS.LIB.BOX({w:w, h:h, portal:1, callback:p => p.type == 'rocket' && 1}),
+					
+					new JPS.LIB.POLYGON({type:'asteroid', w:20, h:20, color:0, stroke:'white', vx:[0,50], vy:[0,50], vr:[0,.5], s:5}),
+					new JPS.LIB.TRIANGLE({type:'ship', w:25, h:15, color:'white'}),
+					new JPS.LIB.RECTANGLE({type:'rocket', w:10, h:2, color:'white'}),
+					
+					(info = new JPS.LIB.INFO({x:w/2, y:h/2, h:50, align:'center', text:''})),
+					(controller = new JPS.LIB.CONTROLLER({callback:click, binds:[
+						{key:'KeyW', value:100, id:'v'},
+						{key:'KeyA', value:-3,  prop:'r'},
+						{key:'KeyD', value:3,   prop:'r'}
+					]}))
+				)
+				
+				controller.target = system.spawn(1, {type:'ship', x:w/4, y:h/2})
+
+				render()
+			}
+
+			function render() {
+				ctx.clearRect(0,0,w,h)
+				system.render(ctx)
+				requestAnimationFrame(render)
+			}
+		</script>
+	</body>
+</html>
