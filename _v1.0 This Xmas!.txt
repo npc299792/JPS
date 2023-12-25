@@ -1,4 +1,0 @@
-- 8 new modifiers
-- 2 new samples
-- some bugfixes
-- lots of improvements
