@@ -35,6 +35,18 @@
 				
 				// event handler #####################################################################################################
 
+				click = function(key, down) {
+					if (down && key == 'Space') {
+						var ship = controller.target
+						var c = Math.cos(ship.r), s = Math.sin(ship.r)
+						system.spawn(1, {
+							type:'rocket', r:ship.r,
+							x: c*15 + ship.x, vx: c*300 + ship.vx,
+							y: s*15 + ship.y, vy: s*300 + ship.vy
+						})
+					}
+				}
+
 				collision = function(p, q) {
 					if (p.type == 'rocket' && q.type == 'asteroid') {
 						system.remove(p, q)
@@ -48,22 +60,10 @@
 					}
 				}
 
-				click = function(key, down) {
-					if (down && key == 'Space') {
-						var ship = controller.target
-						var c = Math.cos(ship.r), s = Math.sin(ship.r)
-						system.spawn(1, {
-							type:'rocket', r:ship.r,
-							x: c*15 + ship.x, vx: c*300 + ship.vx,
-							y: s*15 + ship.y, vy: s*300 + ship.vy
-						})
-					}
-				}
-
 				// particle system ###################################################################################################
 
 				system = new JPS.SYSTEM(
-					new JPS.LIB.EMITTER({x:[w*.75,w/4], y:[h/2,h/2-100], type:'asteroid', rate:0, spawn:1}),
+					new JPS.LIB.EMITTER({x:[w*.75,w/4], y:[h/2,h/2-100], type:'asteroid', rate:0, spawn:3}),
 					new JPS.LIB.ANIMATE({x:0, y:0, r:0}),
 
 					new JPS.LIB.COLLISION({double:1, callback:collision}),

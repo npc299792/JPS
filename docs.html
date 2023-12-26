@@ -564,6 +564,18 @@ magnet.target = system.spawn(1, {type:'star', x:w/2, y:h/2})
 	<pre><code>
 <font color="#AAAAAA">// event handler #####################################################################################################</font>
 
+click = function(key, down) {
+	if (down && key == 'Space') {
+		var ship = controller.target
+		var c = Math.cos(ship.r), s = Math.sin(ship.r)
+		system.spawn(1, {
+			type: 'rocket', r: ship.r,
+			x: c*15 + ship.x, vx: c*300 + ship.vx,
+			y: s*15 + ship.y, vy: s*300 + ship.vy
+		})
+	}
+}
+
 collision = function(p, q) {
 	if (p.type == 'rocket' && q.type == 'asteroid') {
 		system.remove(p, q)
@@ -574,18 +586,6 @@ collision = function(p, q) {
 		system.remove(p)
 		controller.callback = null
 		info.color='red'; info.text='GAME OVER'
-	}
-}
-
-click = function(key, down) {
-	if (down && key == 'Space') {
-		var ship = controller.target
-		var c = Math.cos(ship.r), s = Math.sin(ship.r)
-		system.spawn(1, {
-			type: 'rocket', r: ship.r,
-			x: c*15 + ship.x, vx: c*300 + ship.vx,
-			y: s*15 + ship.y, vy: s*300 + ship.vy
-		})
 	}
 }
 
