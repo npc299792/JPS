@@ -188,10 +188,10 @@ function render() {
 		<tr><td width="300">spawn(count, data)</td><td>Spawns the given <i>count</i> of particles in the system. <i>data</i> is a optional object with properties that will be copied into the generated particles.<br><br>Returns a Array with the created particles, if only 1 particle is created it returns the particle itself.</td></tr>
 		<tr><td>render(ctx, time)</td><td>Renders the whole system on the given <i>ctx</i> (Canvas 2D context). <i>time</i> defines the passed time since the last rendering in milliseconds (Default: 16.66 = 60fps). This method also can called without the <i>ctx</i> parameter, be sure the <i>render()</i> methods of your modifiers are prepared for it.</td>
 		<tr><td>count(type, collect)</td><td>Returns the amount of particles in the system. If type is given, it only counts particles of the same type, also can be an Array with a list of types. If <i>collect</i> is <i>true</i> or 1, this function returns a array with the particles that got found.</td>
-		<tr><td>add(...args)</td><td>Adds the given modifiers to the system. Also accepts Arrays with modifiers.<br><br>U also can pass an Canvas 2D context to store it in the system, the system uses it when no other context is given. This is maybe needed when a modifier uses the context from the arguments in a <i>init()</i> or <i>exit()</i> method.</td>
+		<tr><td>add(...args)</td><td>Adds the given modifiers to the system. Also accepts Arrays with modifiers.<br><br>U also can pass a Canvas 2D context to store it in the system, the system uses it when no other context is given. This is maybe needed when a modifier uses the context from the arguments in a <i>init()</i> or <i>exit()</i> method.</td>
 		<tr><td>remove(...args)</td><td>Removes the given modifiers and particles from the system. Also accepts Arrays with modifiers and particles.</td>
 		<tr><td>clear(particles, modifiers)</td><td>Deletes all particles and/or modifiers from the system.</td>
-		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete one or multiple particles by its instance use the <i>remove()</i> method. The <i>ctx</i> is only required when u need it in a <i>exit()</i> method in one of your modifiers.</td>
+		<tr><td>delete(index, ctx)</td><td>Deletes the particle with the given <i>index</i>. If u want to delete one or multiple particles by its instance, use the <i>remove()</i> method. The <i>ctx</i> is only required when u need it in a <i>exit()</i> method in one of your modifiers.</td>
 	</table><br><br>
 
 
@@ -577,15 +577,15 @@ click = function(key, down) {
 }
 
 collision = function(p, q) {
-	if (p.type == 'rocket' && q.type == 'asteroid') {
-		system.remove(p, q)
-		if (q.s > 1) system.spawn(2, {type:'asteroid', x:q.x, y:q.y, s:q.s-1})
-		if (!system.count('asteroid')) {info.color='green'; info.text='YOU WON!'}
-	}
 	if (p.type == 'ship') {
 		system.remove(p)
 		controller.callback = null
 		info.color='red'; info.text='GAME OVER'
+	}
+	if (p.type == 'rocket' && q.type == 'asteroid') {
+		system.remove(p, q)
+		if (q.s > 1) system.spawn(2, {type:'asteroid', x: q.x, y: q.y, s: q.s-1})
+		if (!system.count('asteroid')) {info.color='green'; info.text='YOU WON!'}
 	}
 }
 

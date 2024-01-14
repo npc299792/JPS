@@ -219,7 +219,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="polygon" style="display: none"><br><h1>JPS.LIB.POLYGON(data)</h1><br><br>
+<div id="polygon" style="display: none"><br><h1>JPS.LIB.POLYGON(data)</h1><br>
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
 		<tr><td>w,h</td><td align="center">[30,10,1]</td><td>The width and height of the polygon.</td></tr>
@@ -283,9 +283,8 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
 		<tr><td>x,y,z</td><td align="center">0</td><td>The center of the emitter. <i>z</i> is optional and not set by default, particles only have a <i>z</i> property if <i>z</i> is defined in the Emitter.</td></tr>
 		<tr><td>w,h,d</td><td align="center">100</td><td>The <u>w</u>idth, <u>h</u>eight and <u>d</u>epth of the emitter. The particles will randomly spawn inside this area. <i>d</i> is optional.</td></tr>
-		<tr><td>rate</td><td align="center">1</td><td>Defines how many Particles per second the emitter spawns.</td></tr>
+		<tr><td>rate</td><td align="center">1</td><td>Defines how many particles per second the emitter spawns.</td></tr>
 		<tr><td>spawn</td><td align="center">0</td><td>Defines how many particles spawns next frame. To spawn 50 particles u can simply set this to 50.</td></tr>
-		<tr><td>rnd</td><td align="center"><i>undefined</i></td><td>An optional object with properties that will be randomized and copied into particles created by this emitter. Will overwrite existing properties.</td></tr>
 		<tr><td>type</td><td align="center"><i>undefined</i></td><td>Defines a type for the particles that will spawned by this emitter. If this is an Array, the emitter randomly picks a value from it.</td></tr>
 		<tr><td>life</td><td align="center"><i>undefined</i></td><td>Defines a lifetime for particles spawned by this emitter. Can be randomized like [8000,2000] to set a lifetime between 6 and 10 seconds.</td></tr>
 	</table>
@@ -337,7 +336,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="tween" style="display: none"><br><h1>JPS.LIB.TWEEN(data)</h1><br><br>
+<div id="tween" style="display: none"><br><h1>JPS.LIB.TWEEN(data)</h1><br>
 	Performs a time based animation. All values can be randomized. 
 	
 	<br><br>
@@ -375,7 +374,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="box" style="display: none"><br><h1>JPS.LIB.BOX(data)</h1><br><br>
+<div id="box" style="display: none"><br><h1>JPS.LIB.BOX(data)</h1><br>
 	Keeps particles in or outside an area depending where they created and let them bounce or portal thru the other side when they hit a wall.
 	
 	<br><br>
@@ -393,7 +392,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="collision" style="display: none"><br><h1>JPS.LIB.COLLISION(data)</h1><br><br>
+<div id="collision" style="display: none"><br><h1>JPS.LIB.COLLISION(data)</h1><br>
 	Does circular collisiontests with the particles. It also works with particles who has w & h properties, the collision isn't accurate in that case but can be adjusted by adding a <i>radius</i> property to these particles. This modifier uses the Grid modifier, if the system doesn't already has a Grid modifier and its not delivered via the arguments, it will create one with the default settings and add it to the system.
 	
 	<br><br>
@@ -435,7 +434,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="visible" style="display: none"><br><h1>JPS.LIB.VISIBLE(data)</h1><br><br>
+<div id="visible" style="display: none"><br><h1>JPS.LIB.VISIBLE(data)</h1><br>
 	Does a visibility and mouseover check and stores it as <i>visible</i> and <i>mouseover</i> properties inside the particle. If u have a lot of particles that moves out of the screen, this modifier can save u a lot of rendertime.
 	
 	<br><br>
@@ -462,7 +461,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="connect" style="display: none"><br><h1>JPS.LIB.CONNECT(data)</h1><br><br>
+<div id="connect" style="display: none"><br><h1>JPS.LIB.CONNECT(data)</h1><br>
 	Draws lines between nearby particles. This modifier uses the Grid modifier, if the system doesn't already has a Grid modifier it will create one with the default settings and add it to the system.
 	
 	<br><br>
@@ -478,7 +477,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="backscreen" style="display: none"><br><h1>JPS.LIB.BACKSCREEN(data)</h1><br><br>
+<div id="backscreen" style="display: none"><br><h1>JPS.LIB.BACKSCREEN(data)</h1><br>
 	Creates a copy of the rendering and copies it in the background of the next rendering. 
 	
 	<br><br>
@@ -499,7 +498,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 <!-- ########################################################################################################################## -->
 
 
-<div id="info" style="display: none"><br><h1>JPS.LIB.INFO(data)</h1><br><br>
+<div id="info" style="display: none"><br><h1>JPS.LIB.INFO(data)</h1><br>
 	This modifier is intended for debugging, it allows you to print informations on the screen or besides Particles.
 
 	<br><br>
@@ -536,7 +535,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="slider" style="display: none"><br><h1>JPS.LIB.SLIDER(data)</h1><br><br>
+<div id="slider" style="display: none"><br><h1>JPS.LIB.SLIDER(data)</h1><br>
 	Adds a scroller to control a property of a given object.
 	
 	<br><br>
@@ -562,7 +561,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="drag" style="display: none"><br><h1>JPS.LIB.DRAG(data)</h1><br><br>
+<div id="drag" style="display: none"><br><h1>JPS.LIB.DRAG(data)</h1><br>
 	Adds a common mouse-navigation to the system like in Google Maps. Click and Drag to move screen, use Mousewheel to zoom. Press Space to pause the system. 
 	
 	<br><br>
@@ -578,7 +577,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 </div>
 
 
-<div id="controller" style="display: none"><br><h1>JPS.LIB.CONTROLLER(data)</h1><br><br>
+<div id="controller" style="display: none"><br><h1>JPS.LIB.CONTROLLER(data)</h1><br>
 	Allows u to control one or multiple particles/objects with the keyboard.
 	
 	<br><br>
@@ -626,7 +625,7 @@ myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when sp
 </div>
 
 
-<div id="grid" style="display: none"><br><h1>JPS.LIB.GRID(data)</h1><br><br>
+<div id="grid" style="display: none"><br><h1>JPS.LIB.GRID(data)</h1><br>
 	Stores the particles in a Array structure for quick access. If u wanna do nearby based effects between particles, like collision detection, this modifier can save u a massive amount of rendertime. To give other modifiers easy access to this modifier it stores its reference directly in the system as <i>grid</i> property.
 	
 	<br><br>
@@ -652,7 +651,7 @@ myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when sp
 </div>
 
 
-<div id="rendertime" style="display: none"><br><h1>JPS.LIB.RENDERTIME(data)</h1><br><br>
+<div id="rendertime" style="display: none"><br><h1>JPS.LIB.RENDERTIME(data)</h1><br>
 	Stabilizes the <i>system.rendertime</i> property for better readability. 
 	
 	<br><br>
@@ -669,8 +668,8 @@ myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when sp
 <!-- ########################################################################################################################## -->
 
 
-<div id="tools" style="display: none"><br><h1>JPS.TOOLS</h1><br><br>
-	With this Library comes a few functions that u can use in your projects when JPS.LIB is included. 
+<div id="tools" style="display: none"><br><h1>JPS.TOOLS</h1><br>
+	With this Library comes a few functions that u can use in your projects when JPS.LIB is included...
 	
 	<br><br><hr><br><br>
 
@@ -684,7 +683,7 @@ myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when sp
 		<tr><th width="200">Type</th><th>Description</th></tr>
 		<tr><td>Object</td><td>All properties of the object will be randomized and copied into the target.</td></tr>
 		<tr><td>Array</td><td>When u pass an Array, this function is using it as a filterlist for all following objects. If u dont want to copy the x & y properties for example, pass <i>['x','y']</i> before the objects.</td></tr>
-		<tr><td>Boolean</td><td>A Boolean defines if the following objects will overwrite existing properties. Default is <i>false</i>.</td></tr>
+		<tr><td>Boolean</td><td>A Boolean defines if the following objects will overwrite existing properties. Default is <i>true</i>.</td></tr>
 	</table>
 
 	<br><br><hr><br><br>
