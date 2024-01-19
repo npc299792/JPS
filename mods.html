@@ -387,7 +387,7 @@ All modifiers take an optional arguments object to change their behavior, otherw
 		<tr><td>portal</td><td align="center"><i>undefined</i></td><td>If this is true, the particles will portal to the opposite side.</td></tr>
 		<tr><td>color</td><td align="center"><i>undefined</i></td><td>If this is defined, the modifier will draw a rectangle at its position with this color.</td></tr>
 		<tr><td>line</td><td align="center">1</td><td>If <i>color</i> is set, this will set the line thickness.</td></tr>
-		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when a particle hits a wall. The function will be called with the follow arguments...<br><br><b><i>callback(particle, side, system, modifier)</i></b><br><br><i>side</i> defines the side of collision, 1: Left, 2: Right, 3: Top, 4: Bottom<br>This callback can return 1 (delete particle) or 2 (skip render process for this particle).</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when a particle hits a wall with the following arguments...<br><br><b><i>callback(particle, side, system, modifier)</i></b><br><br><i>side</i> defines the side of collision, 1: Left, 2: Right, 3: Top, 4: Bottom<br>This callback can return 1 (delete particle) or 2 (skip render process for this particle).</td></tr>
 	</table>
 </div>
 
@@ -400,10 +400,10 @@ All modifiers take an optional arguments object to change their behavior, otherw
 	<table width="100%">
 		<tr><th width="200">Name</th><th width="200" align="center">Default</th><th>Description</th></tr>
 		<tr><td>id</td><td align="center">'v'</td><td>The animation layer id to apply the new velocities.</td></tr>
-		<tr><td>extend</td><td align="center">50</td><td>The search radius of every particle will be extended by this value. Should be bigger as the biggest radius of all particles.</td></tr>
+		<tr><td>extend</td><td align="center">50</td><td>The search radius of every particle will be extended by this value. Should be bigger as the radius of the biggest particle.</td></tr>
 		<tr><td>bounce</td><td align="center">1</td><td>New velocity after a collision (1 = 100%).</td></tr>
 		<tr><td>grid</td><td align="center"><i>undefined</i></td><td>Set this value to a Grid modifier if u want to use another grid.</td></tr>
-		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when 2 particles collide. The callback function is called with the following arguments...<br><br><b><i>callback(particle1, particle2, distance)</i></b><br><br>If the callback returns <i>true</i>, the collision handling will be skipped for this event.</td></tr>
+		<tr><td>callback</td><td align="center"><i>undefined</i></td><td>Will be called when 2 particles collide with the following arguments...<br><br><b><i>callback(particle1, particle2, distance)</i></b><br><br>If the callback returns <i>true</i>, the collision handling will be skipped for this event.</td></tr>
 		<tr><td>double</td><td align="center"><i>undefined</i></td><td>If this is true, the callback will be called twice with a swapped order of the colliding particles.</td></tr>
 	</table>
 
@@ -645,7 +645,7 @@ myController.keys['Space']	<font color="#AAAAAA">// contains <i>true</i> when sp
 	<br><br>
 
 	<table width="100%">
-		<tr><th width="350">Name</th><th>Description</th></tr>
+		<tr><th width="400">Name</th><th>Description</th></tr>
 		<tr><td>test(particle, radius, callback)</td><td>Calls the <i>callback</i> function with every particle nearby the given <i>particle</i> in the <i>radius</i>. The callback function is called with the following arguments...<br><br><b>callback(particle1, particle2, distance, x-distance, y-distance)</b></td></tr>
 	</table>
 </div>
